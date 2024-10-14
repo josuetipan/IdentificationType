@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { User } from 'src/core/domain/user.entity';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoggerService } from '../loggger/logger.service';
+import { User } from 'src/core/domain/user.entity';
 
 @Injectable()
 export class UserService {
@@ -13,11 +13,15 @@ export class UserService {
   ) {}
 
   async create(data: CreateUserDto): Promise<object> {
+    console.log(data);
     try {
-      const user = await this.prisma.user.create({
-        data: data,
+      const users = await this.prisma.users.create({
+        data: {
+          name: data.name,
+          email: data.email,
+        },
       });
-      this.logger.log(`Usuario creado correctamente: ${JSON.stringify(user)}`);
+      this.logger.log(`Usuario creado correctamente: ${JSON.stringify(users)}`);
     } catch (error) {
       console.log(error);
       if (error.meta.target) {
@@ -30,18 +34,18 @@ export class UserService {
   }
   async findAll(limit: string): Promise<User[]> {
     if (limit) {
-      return this.prisma.user.findMany({
+      return this.prisma.users.findMany({
         take: parseInt(limit),
       });
     } else {
-      return this.prisma.user.findMany();
+      return this.prisma.users.findMany();
     }
   }
   async findOne(id: string): Promise<User> {
-    return this.prisma.user.findUnique({ where: { id: id } });
+    return this.prisma.users.findUnique({ where: { id: id } });
   }
   async update(id: string, data: UpdateUserDto): Promise<User> {
-    return this.prisma.user.update({
+    return this.prisma.users.update({
       where: { id: id },
       data: {
         name: data.name,
@@ -50,6 +54,6 @@ export class UserService {
     });
   }
   async delete(id: string): Promise<User> {
-    return this.prisma.user.delete({ where: { id } });
+    return this.prisma.users.delete({ where: { id } });
   }
 }

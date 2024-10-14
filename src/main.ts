@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { LoggerService } from './core/application/loggger/logger.service';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { appConfig } from './shared/config/app.config';
+import { appConfig } from './utils/config/app.config';
 
 async function bootstrap() {
   //Establecer logger e inicializar NEST
@@ -20,6 +20,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
+
   SwaggerModule.setup('api', app, document);
   //Levantar Microservicio
   await app.listen(appConfig.port);

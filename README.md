@@ -56,6 +56,22 @@ $ npx prisma migrate dev
 > [!IMPORTANT]
 > Ejecutar el paso 1 y 2 dos para que el proyecto funcione ademas de colocar correctamente las variables de entorno de tu base de datos local
 
+### Sincronizar tablas
+
+Para traer los datos de la tabla se usa el comando:
+
+```bash
+#Para traer los datos de la tabla
+$ npx prisma db pull
+```
+
+Para enviar los cambios en los modelos
+
+```bash
+#Para traer los datos de la tabla
+$ npx prisma db push
+```
+
 ## Ejecutar el proyecto 🚀
 
 Una vez que hayas configurado Prisma y las variables de entorno, puedes compilar y ejecutar el proyecto con los siguientes comandos:
@@ -126,6 +142,12 @@ La plantilla ya tiene un dockerfile que permitira crear una imagen de tu proyect
 
 ```bash
 docker build -t <nombre-de-imagen> .
+```
+
+Para crear un contenedor
+
+```bash
+docker run -p 3000:3000 -e DATABASE_URL="postgresql://user:password@host:port/db" --name nombre-contenedor imagen
 ```
 
 ## Arquitectura 💻

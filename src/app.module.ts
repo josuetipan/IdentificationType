@@ -4,10 +4,10 @@ import { UserModule } from './core/infrastructure/adaptarts/modules/user.module'
 
 @Module({
   imports: [
-    UserModule
+    UserModule,
     //ConfigModule.forRoot({
-      //envFilePath: `.env.${process.env.NODE_ENV || 'development'}`, #Establecer env
-      //isGlobal: true, // Hace que el ConfigModule esté disponible en toda la app sin necesidad de importarlo en cada módulo
+    //envFilePath: `.env.${process.env.NODE_ENV || 'development'}`, #Establecer env
+    //isGlobal: true, // Hace que el ConfigModule esté disponible en toda la app sin necesidad de importarlo en cada módulo
     //}),
   ],
   controllers: [],
