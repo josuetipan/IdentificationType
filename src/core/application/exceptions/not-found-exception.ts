@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { LoggerService } from '../loggger/logger.service'; // Asegúrate de que la ruta sea correcta
-import { apiExceptionConfig, apiBaseEntityName } from 'src/utils/api/apiExceptionConfig';
+import { apiExceptionConfig, apiBaseEntityName, apiMethodsName } from 'src/utils/api/apiExceptionConfig';
 import { UUIDValidator } from 'src/utils/api/apiUuidValidator';
 
 @Catch(NotFoundException) // Este decorador indica que este filtro manejará excepciones de tipo NotFoundException
@@ -20,14 +20,13 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
     const exceptionResponse: any = exception.getResponse();
-    const httpMethod = request.method;
+    const httpMethod = request.method; // Obtener el método HTTP
     let customMessage = exceptionResponse.message;
-    if(exception.message.includes('Cannot')) {
-      customMessage = `The route '${request.url}' was not found. Please ensure that the URL is correct and that the resource exists. (Entity: ${apiBaseEntityName}, Method: ${httpMethod})`
 
+    if (exception.message.includes('Cannot')) {
+      customMessage = `The route '${request.url}' was not found. Please ensure that the URL is correct and that the resource exists. (Entity: ${apiBaseEntityName}, Method: ${httpMethod})`;
     }
-    // Obtener el mensaje personalizado si existe, o usar un mensaje por defecto
-    
+
     // Lógica para manejar las validaciones de rutas
     const routeConfig = apiExceptionConfig.notFound.routes.find(
       (route) => route.method === httpMethod && request.url.startsWith(route.path) // Cambiado a startsWith
@@ -37,51 +36,56 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
     const idParam = request.params['id'];
     if (idParam && !UUIDValidator.isValidUUID(idParam)) {
       response.status(HttpStatus.BAD_REQUEST).json({
-        type: 'Bad Request',
-        httpcode: HttpStatus.BAD_REQUEST,
-        message: `The parameter "id" must be a valid UUID. Provided: "${idParam}"`,
+        code: apiExceptionConfig.badRequest.code, // Tipo de error
+        message: `The parameter "id" must be a valid UUID. Provided: "${idParam}"`, // Mensaje indicando el parámetro faltante
+        timestamp: new Date().toISOString(),
+        service: apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName], // Código HTTP
       });
       return;
     }
-    
-    // Si se encuentra una configuración de ruta
+
+    // Respuesta para el caso de Not Found con la ruta encontrada
     if (routeConfig) {
       const validationConfig = apiExceptionConfig.validation.routes[httpMethod.toLowerCase()];
       if (validationConfig && validationConfig.path === routeConfig.path) {
         for (const param of validationConfig.requiredParams) {
           if (!request.params[param]) {
             // Si falta un parámetro requerido, devolver un error 400 Bad Request
-            response.status(apiExceptionConfig.badRequest.httpcode).json({
-              type: apiExceptionConfig.badRequest.type, // Tipo de error
-              httpcode: apiExceptionConfig.badRequest.httpcode, // Código HTTP
+            response.status(parseInt(apiExceptionConfig.badRequest.code)).json({
+              code: apiExceptionConfig.badRequest.code, // Tipo de error
               message: `The parameter "${param}" is required for this route.`, // Mensaje indicando el parámetro faltante
+              timestamp: new Date().toISOString(),
+              service: apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName], // Código HTTP
             });
             return;
           }
         }
       }
 
-      // Respuesta para el caso de Not Found con la ruta encontrada
-      response.status(apiExceptionConfig.notFound.httpcode).json({
-        type: apiExceptionConfig.notFound.type, // Tipo de error
-        httpcode: apiExceptionConfig.notFound.httpcode, // Código HTTP
-        message: customMessage, // Mensaje personalizado o por defecto
+      // Respuesta de error para el caso de Not Found
+      response.status(parseInt(apiExceptionConfig.notFound.code)).json({
+        code: apiExceptionConfig.notFound.code,
+        message: customMessage,
+        timestamp: new Date().toISOString(),
+        service: apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName], // Obtener el mensaje del método
       });
       return;
     }
-    
+
     // Respuesta para el caso de Not Found genérico cuando no se encuentra la ruta
     response.status(HttpStatus.NOT_FOUND).json({
-      type: apiExceptionConfig.notFound.type, // Tipo de error genérico
-      httpcode: HttpStatus.NOT_FOUND, // Código HTTP 404
-      message: customMessage, // Mensaje genérico con la URL
+      code: apiExceptionConfig.notFound.code,
+      message: customMessage,
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName], // Obtener el mensaje del método
     });
 
     // Log de error para registrar detalles sobre la excepción
     const errorLogs = JSON.stringify({
-      statusCode: status,
-      typeError: exceptionResponse.error,
-      message: customMessage, // Log del mensaje personalizado o por defecto
+      code: apiExceptionConfig.notFound.code,
+      message: customMessage,
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName], // Obtener el mensaje del método
     });
     this.logger.error(errorLogs); // Registro del error utilizando el servicio de logger
   }

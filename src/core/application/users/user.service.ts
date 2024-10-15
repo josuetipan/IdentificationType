@@ -10,7 +10,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { LoggerService } from '../loggger/logger.service';
 import { User } from 'src/core/domain/user.entity';
 import { SendData } from '../dto/sendData-user.dto';
-import { apiBaseEntityName } from 'src/utils/api/apiExceptionConfig';
+import { apiBaseEntityName, apiMethodsName } from 'src/utils/api/apiExceptionConfig';
 
 @Injectable()
 export class UserService {
@@ -39,7 +39,7 @@ export class UserService {
       this.logger.error(`Error creating user: ${error.message}`);
       throw new BadRequestException('Error creating user');
     }
-    return { message: `${apiBaseEntityName} successfully created` };
+    return { message: apiMethodsName.post };
   }
 
   async findAll(limit: string, page: string): Promise<SendData | User[]> {

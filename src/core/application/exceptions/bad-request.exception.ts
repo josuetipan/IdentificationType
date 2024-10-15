@@ -5,9 +5,10 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { LoggerService } from '../loggger/logger.service';
 import { apiExceptionConfig } from 'src/utils/api/apiExceptionConfig'; // Asegúrate de que la ruta sea correcta
+import { apiMethodsName } from 'src/utils/api/apiExceptionConfig'; // Asegúrate de que la ruta sea correcta
 
 @Catch(BadRequestException)
 export class BadRequestExceptionFilter implements ExceptionFilter {
@@ -22,6 +23,7 @@ export class BadRequestExceptionFilter implements ExceptionFilter {
 
     let groupedErrors: Record<string, string[]> = {};
 
+    // Agrupar errores de validación
     if (Array.isArray(validationErrors)) {
       groupedErrors = validationErrors.reduce(
         (acc: Record<string, string[]>, error: ValidationError | string) => {
@@ -42,19 +44,28 @@ export class BadRequestExceptionFilter implements ExceptionFilter {
       groupedErrors.general = [validationErrors];
     }
 
+    // Obtener el método HTTP
+    const request = ctx.getRequest<Request>();
+    const httpMethod = request.method; 
+    const serviceName = apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName]; // Obtener el nombre del servicio
+
+    // Registro del error utilizando el servicio de logger
     const errorLogs = JSON.stringify({
-      statusCode: status,
-      typeError: apiExceptionConfig.badRequest.type,
-      errors: groupedErrors,
+      code: apiExceptionConfig.badRequest.code,
+      message: apiExceptionConfig.badRequest.message,
+      timestamp: new Date().toISOString(),
+      service: serviceName,
+      errors: groupedErrors, // Incluyendo errores agrupados en el log
     });
     this.logger.error(errorLogs);
-
-    // Responder al cliente siguiendo el nuevo formato
+    
+    // Responder al cliente siguiendo la nueva estructura
     response.status(status).json({
-      type: apiExceptionConfig.badRequest.type, // Tipo de error configurable
-      httpcode: apiExceptionConfig.badRequest.httpcode, // Código HTTP configurable
+      code: apiExceptionConfig.badRequest.code, // Tipo de error configurable
       message: apiExceptionConfig.badRequest.message, // Mensaje configurable
-      errors: groupedErrors, // Errores agrupados
+      timestamp: new Date().toISOString(), // Timestamp actual
+      service: serviceName, // Incluir el nombre del servicio
+      errors: groupedErrors, // Incluyendo errores agrupados en el log
     });
   }
 }
