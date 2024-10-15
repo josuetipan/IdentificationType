@@ -1,8 +1,10 @@
 //Dto para la creacion
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 export class CreateUserDto {
-  id: string;
+  @IsString()
   name: string;
+  @IsEmail()
+  @IsString()
+  @IsNotEmpty()
   email: string;
-  createdAt: Date;
-  updateAt: Date;
 }

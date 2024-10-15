@@ -9,23 +9,26 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from 'src/core/application/dto/create-user.dto';
+import { SendData } from 'src/core/application/dto/sendData-user.dto';
 import { UpdateUserDto } from 'src/core/application/dto/update-user.dto';
 import { UserService } from 'src/core/application/users/user.service';
 import { User } from 'src/core/domain/user.entity';
-
-@Controller('user')
+@ApiTags('/msa/users')
+@Controller('/msa/users')
 export class UserController {
   constructor(private userService: UserService) {}
   @Post('1.0')
   @HttpCode(201)
   async createUser(@Body() data: CreateUserDto): Promise<object> {
+    console.log(data);
     return this.userService.create(data);
   }
   @Get('1.0')
-  async getAllUsers(@Query() params): Promise<User[]> {
-    const { limit } = params;
-    return this.userService.findAll(limit);
+  async getAllUsers(@Query() params): Promise<SendData> {
+    const { limit, page } = params;
+    return this.userService.findAll(limit, page);
   }
 
   @Get('1.0/:id')

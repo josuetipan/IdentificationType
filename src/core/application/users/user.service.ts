@@ -1,9 +1,14 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoggerService } from '../loggger/logger.service';
 import { User } from 'src/core/domain/user.entity';
+import { SendData } from '../dto/sendData-user.dto';
 
 @Injectable()
 export class UserService {
@@ -14,6 +19,14 @@ export class UserService {
 
   async create(data: CreateUserDto): Promise<object> {
     console.log(data);
+    const userExists = await this.prisma.users.findMany({
+      where: { email: data.email },
+    });
+    console.log(userExists);
+    if (userExists.length > 0) {
+      this.logger.error('El correo ya esta en uso: ' + data.email);
+      throw new ConflictException('El correo ya está en uso :' + data.email);
+    }
     try {
       const users = await this.prisma.users.create({
         data: {
@@ -24,21 +37,28 @@ export class UserService {
       this.logger.log(`Usuario creado correctamente: ${JSON.stringify(users)}`);
     } catch (error) {
       console.log(error);
-      if (error.meta.target) {
-        throw new Error('Error con' + error.meta.target);
-      }
       this.logger.error(`Error al crear el usuario: ${error.message}`);
       throw new BadRequestException('Error al crear el usuario');
     }
     return { mesage: 'Usuario creado correctamente' };
   }
-  async findAll(limit: string): Promise<User[]> {
+  async findAll(limit: string, page: string): Promise<SendData> {
+    const pageQuery = limit && page ? page : (page = '1');
     if (limit) {
-      return this.prisma.users.findMany({
+      const usersQuery = await this.prisma.users.findMany({
         take: parseInt(limit),
+        skip: (parseInt(pageQuery) - 1) * parseInt(limit),
       });
+      return {
+        data: usersQuery,
+        limit: limit,
+        page: page,
+      };
     } else {
-      return this.prisma.users.findMany();
+      const users = await this.prisma.users.findMany();
+      return {
+        data: users,
+      };
     }
   }
   async findOne(id: string): Promise<User> {
