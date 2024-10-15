@@ -7,9 +7,10 @@ import {
 import { ValidationError } from 'class-validator';
 import { Response } from 'express';
 import { LoggerService } from '../loggger/logger.service';
+import { apiExceptionConfig } from 'src/utils/api/apiExceptionConfig'; // Asegúrate de que la ruta sea correcta
 
 @Catch(BadRequestException)
-export class ValidationExceptionFilter implements ExceptionFilter {
+export class BadRequestExceptionFilter implements ExceptionFilter {
   constructor(private logger: LoggerService) {}
 
   catch(exception: BadRequestException, host: ArgumentsHost) {
@@ -17,22 +18,17 @@ export class ValidationExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
     const exceptionResponse: any = exception.getResponse();
-
     const validationErrors = exceptionResponse.message;
 
-    // Verificar si validationErrors es un arreglo
     let groupedErrors: Record<string, string[]> = {};
 
     if (Array.isArray(validationErrors)) {
-      // Agrupar los errores por propiedad si validationErrors es un array
       groupedErrors = validationErrors.reduce(
         (acc: Record<string, string[]>, error: ValidationError | string) => {
           if (typeof error === 'string') {
-            // Para errores que no son de class-validator, los agrupamos en "general"
             acc.general = acc.general || [];
             acc.general.push(error);
           } else {
-            // Agrupamos los errores por la propiedad
             const field = error.property;
             const messages = Object.values(error.constraints);
             acc[field] = acc[field] || [];
@@ -43,21 +39,22 @@ export class ValidationExceptionFilter implements ExceptionFilter {
         {},
       );
     } else if (typeof validationErrors === 'string') {
-      // Si validationErrors es un string, lo agrupamos en "general"
       groupedErrors.general = [validationErrors];
     }
 
     const errorLogs = JSON.stringify({
       statusCode: status,
-      typeError: exceptionResponse.error,
+      typeError: apiExceptionConfig.badRequest.type,
       errors: groupedErrors,
     });
     this.logger.error(errorLogs);
 
+    // Responder al cliente siguiendo el nuevo formato
     response.status(status).json({
-      statusCode: status,
-      typeError: exceptionResponse.error,
-      errors: groupedErrors,
+      type: apiExceptionConfig.badRequest.type, // Tipo de error configurable
+      httpcode: apiExceptionConfig.badRequest.httpcode, // Código HTTP configurable
+      message: apiExceptionConfig.badRequest.message, // Mensaje configurable
+      errors: groupedErrors, // Errores agrupados
     });
   }
 }

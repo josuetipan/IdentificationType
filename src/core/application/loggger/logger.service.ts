@@ -1,28 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { Logger, createLogger, format, transports } from 'winston';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import 'winston-daily-rotate-file';
-//Creacion del servicio de logger
+
 @Injectable()
 export class LoggerService {
-  //Creacion de loggers para la creacion de loggers
   private loggerInfo: Logger;
   private loggerError: Logger;
   private loggerWarn: Logger;
   private loggerAll: Logger;
-  //Instanciar la creacion de loggers
+
   constructor() {
     this.createLoggers();
   }
 
   createLoggers() {
-    //Creacion del logger INFO
-    const textFormat = format.printf((log) => {
-      return `${log.timestamp} - [${log.level}] ${log.message}`;
-    });
+    const textFormat = format.combine(
+      format.printf((log) => {
+        return `${log.timestamp} - [${log.level.toUpperCase()}] ${log.message}`;
+      }),
+    )
     const dateFormat = format.timestamp({
       format: 'YYYY-MM-DD HH:mm:ss',
     });
+
     this.loggerInfo = createLogger({
       level: 'info',
       format: format.combine(dateFormat, textFormat),
@@ -35,6 +35,7 @@ export class LoggerService {
         }),
       ],
     });
+
     this.loggerError = createLogger({
       level: 'error',
       format: format.combine(dateFormat, textFormat),
@@ -47,6 +48,7 @@ export class LoggerService {
         }),
       ],
     });
+
     this.loggerWarn = createLogger({
       level: 'warn',
       format: format.combine(dateFormat, textFormat),
@@ -59,6 +61,7 @@ export class LoggerService {
         }),
       ],
     });
+
     this.loggerAll = createLogger({
       format: format.combine(dateFormat, textFormat),
       transports: [
@@ -77,17 +80,21 @@ export class LoggerService {
     this.loggerInfo.info(message);
     this.loggerAll.info(message);
   }
+
   error(message: string) {
     this.loggerError.error(message);
     this.loggerAll.error(message);
   }
+
   warn(message: string) {
     this.loggerWarn.warn(message);
     this.loggerAll.warn(message);
   }
+
   debug(message: string) {
     this.loggerAll.debug(message);
   }
+
   verbose(message: string) {
     this.loggerAll.verbose(message);
   }

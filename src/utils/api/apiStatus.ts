@@ -1,35 +1,14 @@
-export const apiEntityName: string = 'User';
+export const apiEntityName: string = 'Users';
 
 export const apiStatus = {
   ok: {
     type: 'Success',
     httpcode: 200,
-    message: 'Indicates that the service ran successfully',
+    message: 'Successful retrieval of identification types',
     example: {
       httpcode: 200,
       type: 'Success',
-      message: 'Indicates that the service ran successfully',
-    },
-  },
-  create: {
-    type: 'Created',
-    httpcode: 201,
-    message: `Indicates that the service created ${apiEntityName} successfully`,
-    example: {
-      type: 'Created',
-      httpcode: 201,
-      message: `${apiEntityName} created successfully`,
-    },
-  },
-  noContent: {
-    type: 'No Content',
-    httpcode: 204,
-    message:
-      'Indicates that the request was successful but there is no content to return',
-    example: {
-      httpcode: 204,
-      type: 'No Content',
-      message: 'No content available',
+      message: 'Successful retrieval of identification types',
     },
   },
   badRequest: {
@@ -72,20 +51,35 @@ export const apiStatus = {
       message: `${apiEntityName} not found`,
     },
   },
+  methodNotAllowed: {
+    type: 'Error',
+    httpcode: 405,
+    message: 'Method not allowed for this resource',
+    example: {
+      httpcode: 405,
+      type: 'Error',
+      message: 'The method is not allowed for this endpoint',
+    },
+  },
+  requestTimeout: {
+    type: 'Error',
+    httpcode: 408,
+    message: 'Request timeout',
+    example: {
+      httpcode: 408,
+      type: 'Error',
+      message: 'The request took too long to complete',
+    },
+  },
   conflict: {
     type: 'Error',
     httpcode: 409,
-    message: 'A conflict occurred due to duplicate data or conflicting state',
+    message: 'A conflict occurred due to business rule violations',
     example: {
       httpcode: 409,
       type: 'Error',
-      message: 'Duplicate or conflicting data found',
+      message: 'Business rule conflict occurred',
     },
-  },
-  businessError: {
-    type: 'Business Error',
-    httpcode: 498,
-    message: 'Error of business',
   },
   internalServerError: {
     type: 'Error',
