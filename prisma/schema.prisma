@@ -7,19 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model document_type {
-  name                   String
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime
-  id_type_identification String   @id @db.Uuid
+model identificationTypes {
+  id   String @id @db.Uuid @default(uuid())
+  name String
 }
 
 model users {
-  id        String   @id @default(uuid()) @db.Uuid
+  id        String   @id @db.Uuid
   name      String
   email     String   @unique
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime
 
   @@index([name, email])
 }

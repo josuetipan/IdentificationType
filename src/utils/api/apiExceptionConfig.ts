@@ -1,7 +1,7 @@
 // apiExceptionConfig.ts
 
 // Nombre base de la entidad, se puede cambiar según la entidad en uso
-export const apiBaseEntityName: string = 'Users'; // Cambia esto según sea necesario
+export const apiBaseEntityName: string = 'identificationTypes'; // Cambia esto según sea necesario
 
 export const apiMethodsName = {
   get: `Retrieves ${apiBaseEntityName}`,

@@ -1,4 +1,4 @@
-export const apiEntityName: string = 'Users';
+export const apiEntityName: string = 'identificationTypes';
 
 export const apiStatus = {
   ok: {
