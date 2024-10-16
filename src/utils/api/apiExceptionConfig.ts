@@ -1,14 +1,5 @@
-// apiExceptionConfig.ts
-
-// Nombre base de la entidad, se puede cambiar según la entidad en uso
-export const apiBaseEntityName: string = 'identificationTypes'; // Cambia esto según sea necesario
-
-export const apiMethodsName = {
-  get: `Retrieves ${apiBaseEntityName}`,
-  post: `Save ${apiBaseEntityName}`,
-  put: `Upadte ${apiBaseEntityName}`,
-  delete: `Remove ${apiBaseEntityName}`,
-}
+import { apiBaseEntityName } from './apiBaseEntity'
+import { apiMethodsName } from './apiMethodsName';
 
 export const apiExceptionConfig = {
   notFound: {

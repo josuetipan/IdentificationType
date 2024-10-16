@@ -27,6 +27,8 @@ COPY --from=base /app/prisma ./prisma
 
 ENV NODE_ENV=production
 
+ENV LOG_LEVEL=error
+
 EXPOSE 3000
 
 # Ejecuta las migraciones y luego la aplicación

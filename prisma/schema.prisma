@@ -21,3 +21,4 @@ model users {
 
   @@index([name, email])
 }
+

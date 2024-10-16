@@ -7,8 +7,10 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { LoggerService } from '../loggger/logger.service'; // Asegúrate de que la ruta sea correcta
-import { apiExceptionConfig, apiBaseEntityName, apiMethodsName } from 'src/utils/api/apiExceptionConfig';
-import { UUIDValidator } from 'src/utils/api/apiUuidValidator';
+import { apiExceptionConfig } from 'src/utils/api/apiExceptionConfig';
+import { Validator } from 'src/utils/api/apiValidations';
+import { apiBaseEntityName } from 'src/utils/api/apiBaseEntity';
+import { apiMethodsName } from 'src/utils/api/apiMethodsName';
 
 @Catch(NotFoundException) // Este decorador indica que este filtro manejará excepciones de tipo NotFoundException
 export class NotFoundExceptionFilter implements ExceptionFilter {
@@ -34,7 +36,7 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
 
     // Validar que la ID en la URL sea un número entero
     const idParam = request.params['id'];
-    if (idParam && !UUIDValidator.isValidUUID(idParam)) {
+    if (idParam && !Validator.isValidUUID(idParam)) {
       response.status(HttpStatus.BAD_REQUEST).json({
         code: apiExceptionConfig.badRequest.code, // Tipo de error
         message: `The parameter "id" must be a valid UUID. Provided: "${idParam}"`, // Mensaje indicando el parámetro faltante
