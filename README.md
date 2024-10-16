@@ -8,6 +8,8 @@
 
 Esta plantilla te permite crear un microservicio basado en [NestJS](https://nestjs.com/) con el ejemplo de gestión de usuarios. Incluye configuración para Prisma como gestor de bases de datos y está diseñada con una arquitectura hexagonal.
 
+Puedes profuncionar mas sobre el uso del mismo dando [click aqui](./GetStarted.md)
+
 ## Como empezar
 
 Clona el repositorio usando el metodo que gustes
@@ -158,7 +160,7 @@ La arquitectura usada esta basada en la hexagonal, adaptada para la creacion de 
 
 ## Creacion de swagger
 
-El proyecto viene con documentacion con el uso de swagger, visita la url de tu proyecto y navega a */api* donde encontraras la documentacion generada.
+El proyecto viene con documentacion con el uso de swagger, visita la url de tu proyecto y navega a _/api_ donde encontraras la documentacion generada.
 
 ### Exportar a YML
 
@@ -173,18 +175,18 @@ npm install js-yaml
 - Uso de la dependencia
 
 ```ts
-  import * as yaml from 'js-yaml';
-  import * as fs from 'fs';
+import * as yaml from 'js-yaml';
+import * as fs from 'fs';
 
-  // Crea el documento JSON de Swagger
-  const document = SwaggerModule.createDocument(app, config);
+// Crea el documento JSON de Swagger
+const document = SwaggerModule.createDocument(app, config);
 
-  // Convierte el documento JSON a YAML
-  const yamlDocument = yaml.dump(document);
+// Convierte el documento JSON a YAML
+const yamlDocument = yaml.dump(document);
 
-  // Guarda el archivo YAML si es necesario
-  fs.writeFileSync('./swagger.yml', yamlDocument);
-  SwaggerModule.setup('api', app, document);
+// Guarda el archivo YAML si es necesario
+fs.writeFileSync('./swagger.yml', yamlDocument);
+SwaggerModule.setup('api', app, document);
 ```
 
 ## Guia de uso 🎉

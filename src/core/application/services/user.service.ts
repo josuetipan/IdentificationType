@@ -9,7 +9,6 @@ import { UpdateUserDto } from '../dtos/update-user.dto';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { User } from 'src/core/domain/user.entity';
 import { SendData } from '../dtos/sendData-user.dto';
-import { LoggerKafkaService } from '../loggger/loggerKafka.service';
 import { apiBaseEntityName } from 'src/utils/api/apiBaseEntity';
 import { LoggerService } from '../loggger/logger.service';
 import { apiMethodsName } from 'src/utils/api/apiMethodsName';
@@ -48,21 +47,24 @@ export class UserService {
 
   async findAll(limit: string, page: string): Promise<SendData | User[]> {
     this.logger.debug('NOSE XD');
+    const total = await this.prisma.users.count();
     const pageQuery = limit && page ? page : (page = '1');
     if (limit) {
       const usersQuery = await this.prisma.users.findMany({
         take: parseInt(limit),
         skip: (parseInt(pageQuery) - 1) * parseInt(limit),
       });
-      const total = await this.prisma.users.count();
-      return {
+      const dataSend = {
         data: usersQuery,
         limit: limit,
         page: page,
         totalPages: Math.ceil(total / parseInt(limit)).toString(),
       };
+      this.logger.log(JSON.stringify({ total: 'Total de registro: ' + total }));
+      return dataSend;
     } else {
       const users = await this.prisma.users.findMany();
+      this.logger.log(JSON.stringify('Total de registro: ' + total));
       return users;
     }
   }
