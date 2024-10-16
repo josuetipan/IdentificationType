@@ -23,9 +23,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   //Configurar el swaggwer
   const config = new DocumentBuilder()
-    .setTitle('User Microservicie')
-    .setDescription(`Microservicio de usuario para el modo ${appConfig.mode}`)
-    .setVersion('1.0')
+    .setTitle('IdentificationType')
+    .setDescription(`Service that manages identification types such as ID card or passport for different roles`)
+    .setVersion('1.0.0')
     .build();
   app.useGlobalFilters(new BadRequestExceptionFilter(logger), new NotFoundExceptionFilter(logger), new ConflictExceptionFilter(logger), new ForbiddenExceptionFilter(logger), new InternalServerErrorExceptionFilter(logger), new ServiceUnavailableExceptionFilter(logger), new UnauthorizedExceptionFilter(logger), new MethodNotAllowedFilter(logger));
   const document = SwaggerModule.createDocument(app, config);

@@ -5,11 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { UpdateUserDto } from '../dto/update-user.dto';
-import { CreateUserDto } from '../dto/create-user.dto';
 import { LoggerService } from '../loggger/logger.service';
 import { Identification } from 'src/core/domain/identification.entity';
-import { apiBaseEntityName, apiMethodsName } from 'src/utils/api/apiExceptionConfig';
 
 @Injectable()
 export class UserService {

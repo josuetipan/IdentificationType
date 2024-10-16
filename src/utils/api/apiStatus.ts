@@ -72,9 +72,6 @@ export const apiStatus = {
     },
     content: {
       'application/json': {
-        schema: {
-          $ref: '#/components/schemas/Error',
-        },
         example: {
           code: 'Bad Request',
           message: 'Invalid parameters were provided',
