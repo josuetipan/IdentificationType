@@ -7,16 +7,16 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { LoggerService } from '../loggger/logger.service';
 import { User } from 'src/core/domain/user.entity';
 import { SendData } from '../dto/sendData-user.dto';
 import { apiBaseEntityName, apiMethodsName } from 'src/utils/api/apiExceptionConfig';
+import { LoggerKafkaService } from '../loggger/loggerKafka.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private prisma: PrismaService,
-    private logger: LoggerService,
+    private logger: LoggerKafkaService,
   ) {}
 
   async create(data: CreateUserDto): Promise<object> {
