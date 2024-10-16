@@ -11,11 +11,11 @@ import { LoggerKafkaService } from './loggerKafka.service';
 export class LoggerModule {
   static register(useKafka: boolean): DynamicModule {
     const providers = [LoggerService];
-    
+
     if (useKafka) {
       providers.push(LoggerKafkaService);
     }
-    
+
     return {
       module: LoggerModule,
       providers,

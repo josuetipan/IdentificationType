@@ -36,7 +36,9 @@ export class UserService {
           email: data.email,
         },
       });
-      this.logger.log(`${apiBaseEntityName} successfully created: ${JSON.stringify(users)}`);
+      this.logger.log(
+        `${apiBaseEntityName} successfully created: ${JSON.stringify(users)}`,
+      );
     } catch (error) {
       this.logger.error(`Error creating user: ${error.message}`);
       throw new BadRequestException('Error creating user');
@@ -45,7 +47,7 @@ export class UserService {
   }
 
   async findAll(limit: string, page: string): Promise<SendData | User[]> {
-    this.logger.debug("NOSE XD")
+    this.logger.debug('NOSE XD');
     const pageQuery = limit && page ? page : (page = '1');
     if (limit) {
       const usersQuery = await this.prisma.users.findMany({
@@ -69,15 +71,18 @@ export class UserService {
     try {
       const user = await this.prisma.users.findUnique({ where: { id: id } });
       if (user === null) {
-        throw new NotFoundException(`${apiBaseEntityName} not found for ID: ${id}`);
+        throw new NotFoundException(
+          `${apiBaseEntityName} not found for ID: ${id}`,
+        );
       }
       return user;
     } catch (error) {
       // Aquí puedes lanzar una excepción diferente si es necesario, pero asegurate de que sea NotFoundException
-      throw new NotFoundException(`${apiBaseEntityName} not found for ID: ${id}`);
+      throw new NotFoundException(
+        `${apiBaseEntityName} not found for ID: ${id}`,
+      );
     }
   }
-  
 
   async update(id: string, data: UpdateUserDto): Promise<User> {
     return this.prisma.users.update({

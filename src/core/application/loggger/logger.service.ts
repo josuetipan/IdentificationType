@@ -25,8 +25,8 @@ export class LoggerService {
       format: 'YYYY-MM-DD HH:mm:ss',
     });
 
-     // Logger para mensajes de info
-     this.loggerInfo = createLogger({
+    // Logger para mensajes de info
+    this.loggerInfo = createLogger({
       level: 'info',
       format: format.combine(dateFormat, textFormat),
       transports: [
@@ -82,35 +82,33 @@ export class LoggerService {
     });
   }
   async log(message: string) {
-    const levelLogger = process.env.LOG_LEVEL ?? "debug"
+    const levelLogger = process.env.LOG_LEVEL ?? 'debug';
     console.log(levelLogger);
-    if (levelLogger === "info") {
+    if (levelLogger === 'info') {
       this.loggerInfo.info(message);
     }
-    if (levelLogger === "debug" || levelLogger === "info") {
+    if (levelLogger === 'debug' || levelLogger === 'info') {
       this.loggerAll.info(message);
     }
   }
 
   async error(message: string) {
-    const levelLogger = process.env.LOG_LEVEL ?? "debug" //error
-    if(levelLogger === "error") {
+    const levelLogger = process.env.LOG_LEVEL ?? 'debug'; //error
+    if (levelLogger === 'error') {
       this.loggerError.error(message);
     }
     this.loggerAll.error(message);
   }
-  
 
-  
   async debug(message: string) {
-    const levelLogger = process.env.LOG_LEVEL ?? "debug"
+    const levelLogger = process.env.LOG_LEVEL ?? 'debug';
     console.log(levelLogger);
-    
-    if(levelLogger === "debug") {
-      console.log("Si entre");
+
+    if (levelLogger === 'debug') {
+      console.log('Si entre');
       this.loggerDebug.debug(message);
     }
-    this.loggerAll.debug(message)
+    this.loggerAll.debug(message);
   }
   async warn(message: string) {
     this.loggerAll.warn(message);

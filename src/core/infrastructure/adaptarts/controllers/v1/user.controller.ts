@@ -1,24 +1,22 @@
 import {
-  All,
   BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   HttpCode,
-  MethodNotAllowedException,
   Param,
   Post,
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from 'src/core/application/dtos/create-user.dto';
 import { SendData } from 'src/core/application/dtos/sendData-user.dto';
 import { UpdateUserDto } from 'src/core/application/dtos/update-user.dto';
 import { UserService } from 'src/core/application/services/user.service';
 import { User } from 'src/core/domain/user.entity';
-import { apiStatus } from 'src/utils/api/apiStatus';
+import { apiStatus, createEntity } from 'src/utils/api/apiStatus';
 import { Validator } from 'src/utils/api/apiValidations';
 
 @ApiTags('/msa/users')
@@ -28,8 +26,12 @@ export class UserController {
   @ApiResponse(apiStatus.ok)
   @ApiResponse(apiStatus.badRequest)
   @ApiResponse(apiStatus.conflict)
+  @ApiResponse(apiStatus.forbidden)
+  @ApiResponse(apiStatus.internalServerError)
   @ApiResponse(apiStatus.notFound)
+  @ApiResponse(apiStatus.unauthorized)
   @Post('1.0')
+  @ApiCreatedResponse(createEntity)
   @HttpCode(201)
   async createUser(@Body() data: CreateUserDto): Promise<object> {
     return this.userService.create(data);
@@ -50,7 +52,10 @@ export class UserController {
   }
 
   @Put('1.0/:id')
-  async updateUser(@Param('id') id: string, @Body() data: UpdateUserDto): Promise<User> {
+  async updateUser(
+    @Param('id') id: string,
+    @Body() data: UpdateUserDto,
+  ): Promise<User> {
     if (!Validator.isValidUUID(id)) {
       throw new BadRequestException('The "id" parameter must be a valid UUID.');
     }
@@ -66,7 +71,7 @@ export class UserController {
   }
 
   // Capture unsupported methods for specific routes !Not deleted
-/*   @All('1.0')
+  /*   @All('1.0')
   @HttpCode(405)
   handleMethodNotAllowedGeneral() {
     throw new MethodNotAllowedException(

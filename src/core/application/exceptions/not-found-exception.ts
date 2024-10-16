@@ -31,7 +31,8 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
 
     // Lógica para manejar las validaciones de rutas
     const routeConfig = apiExceptionConfig.notFound.routes.find(
-      (route) => route.method === httpMethod && request.url.startsWith(route.path) // Cambiado a startsWith
+      (route) =>
+        route.method === httpMethod && request.url.startsWith(route.path), // Cambiado a startsWith
     );
 
     // Validar que la ID en la URL sea un número entero
@@ -41,14 +42,18 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
         code: apiExceptionConfig.badRequest.code, // Tipo de error
         message: `The parameter "id" must be a valid UUID. Provided: "${idParam}"`, // Mensaje indicando el parámetro faltante
         timestamp: new Date().toISOString(),
-        service: apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName], // Código HTTP
+        service:
+          apiMethodsName[
+            httpMethod.toLowerCase() as keyof typeof apiMethodsName
+          ], // Código HTTP
       });
       return;
     }
 
     // Respuesta para el caso de Not Found con la ruta encontrada
     if (routeConfig) {
-      const validationConfig = apiExceptionConfig.validation.routes[httpMethod.toLowerCase()];
+      const validationConfig =
+        apiExceptionConfig.validation.routes[httpMethod.toLowerCase()];
       if (validationConfig && validationConfig.path === routeConfig.path) {
         for (const param of validationConfig.requiredParams) {
           if (!request.params[param]) {
@@ -57,7 +62,10 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
               code: apiExceptionConfig.badRequest.code, // Tipo de error
               message: `The parameter "${param}" is required for this route.`, // Mensaje indicando el parámetro faltante
               timestamp: new Date().toISOString(),
-              service: apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName], // Código HTTP
+              service:
+                apiMethodsName[
+                  httpMethod.toLowerCase() as keyof typeof apiMethodsName
+                ], // Código HTTP
             });
             return;
           }
@@ -69,7 +77,10 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
         code: apiExceptionConfig.notFound.code,
         message: customMessage,
         timestamp: new Date().toISOString(),
-        service: apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName], // Obtener el mensaje del método
+        service:
+          apiMethodsName[
+            httpMethod.toLowerCase() as keyof typeof apiMethodsName
+          ], // Obtener el mensaje del método
       });
       return;
     }
@@ -79,7 +90,8 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
       code: apiExceptionConfig.notFound.code,
       message: customMessage,
       timestamp: new Date().toISOString(),
-      service: apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName], // Obtener el mensaje del método
+      service:
+        apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName], // Obtener el mensaje del método
     });
 
     // Log de error para registrar detalles sobre la excepción
@@ -87,7 +99,8 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
       code: apiExceptionConfig.notFound.code,
       message: customMessage,
       timestamp: new Date().toISOString(),
-      service: apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName], // Obtener el mensaje del método
+      service:
+        apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName], // Obtener el mensaje del método
     });
     this.logger.error(errorLogs); // Registro del error utilizando el servicio de logger
   }
