@@ -7,7 +7,7 @@ import 'winston-daily-rotate-file';
 export class LoggerService {
   private loggerInfo: Logger;
   private loggerError: Logger;
-  private loggerWarn: Logger;
+  private loggerDebug: Logger;
   private loggerAll: Logger;
 
   constructor() {
@@ -25,8 +25,8 @@ export class LoggerService {
       format: 'YYYY-MM-DD HH:mm:ss',
     });
 
-    // Logger para mensajes de info
-    this.loggerInfo = createLogger({
+     // Logger para mensajes de info
+     this.loggerInfo = createLogger({
       level: 'info',
       format: format.combine(dateFormat, textFormat),
       transports: [
@@ -53,13 +53,13 @@ export class LoggerService {
       ],
     });
 
-    // Logger para mensajes de advertencia
-    this.loggerWarn = createLogger({
-      level: 'warn',
+    // Logger loggerDebug mensajes de advertencia
+    this.loggerDebug = createLogger({
+      level: 'debug',
       format: format.combine(dateFormat, textFormat),
       transports: [
         new transports.DailyRotateFile({
-          filename: 'logs/warn/warn-%DATE%.log',
+          filename: 'logs/debug/debug-%DATE%.log',
           datePattern: 'YYYY-MM-DD',
           maxSize: '20m',
           maxFiles: '14d',
@@ -82,24 +82,39 @@ export class LoggerService {
     });
   }
   async log(message: string) {
-    this.loggerInfo.info(message);
-    this.loggerAll.info(message);
+    const levelLogger = process.env.LOG_LEVEL ?? "debug"
+    console.log(levelLogger);
+    if (levelLogger === "info") {
+      this.loggerInfo.info(message);
+    }
+    if (levelLogger === "debug" || levelLogger === "info") {
+      this.loggerAll.info(message);
+    }
   }
 
   async error(message: string) {
-    this.loggerError.error(message);
+    const levelLogger = process.env.LOG_LEVEL ?? "debug" //error
+    if(levelLogger === "error") {
+      this.loggerError.error(message);
+    }
     this.loggerAll.error(message);
   }
+  
 
+  
+  async debug(message: string) {
+    const levelLogger = process.env.LOG_LEVEL ?? "debug"
+    console.log(levelLogger);
+    
+    if(levelLogger === "debug") {
+      console.log("Si entre");
+      this.loggerDebug.debug(message);
+    }
+    this.loggerAll.debug(message)
+  }
   async warn(message: string) {
-    this.loggerWarn.warn(message);
     this.loggerAll.warn(message);
   }
-
-  async debug(message: string) {
-    this.loggerAll.debug(message);
-  }
-
   async verbose(message: string) {
     this.loggerAll.verbose(message);
   }

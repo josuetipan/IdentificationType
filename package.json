@@ -8,15 +8,15 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "cross-env NODE_ENV=development nest start --watch",
-    "start:debug": "cross-env NODE_ENV=test nest start --debug --watch",
-    "start:prod": "cross-env NODE_ENV=production node dist/main",
+    "start:dev": "cross-env NODE_ENV=development LOG_LEVEL=info nest start --watch",
+    "start:debug": "cross-env NODE_ENV=test LOG_LEVEL=debug nest start --debug --watch",
+    "start:prod": "cross-env NODE_ENV=production node LOG_LEVEL=error dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "cross-env NODE_ENV=testing jest --config ./test/jest-e2e.json"
+    "test:e2e": "cross-env NODE_ENV=testing LOG_LEVEL=debug jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -29,7 +29,7 @@
     "class-validator": "^0.14.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
-    "kafka-logger-mm": "^1.0.3",
+    "kafka-logger-mm": "^1.0.4",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "winston": "^3.15.0",

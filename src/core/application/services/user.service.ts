@@ -5,18 +5,20 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { UpdateUserDto } from '../dto/update-user.dto';
-import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdateUserDto } from '../dtos/update-user.dto';
+import { CreateUserDto } from '../dtos/create-user.dto';
 import { User } from 'src/core/domain/user.entity';
-import { SendData } from '../dto/sendData-user.dto';
-import { apiBaseEntityName, apiMethodsName } from 'src/utils/api/apiExceptionConfig';
+import { SendData } from '../dtos/sendData-user.dto';
 import { LoggerKafkaService } from '../loggger/loggerKafka.service';
+import { apiBaseEntityName } from 'src/utils/api/apiBaseEntity';
+import { LoggerService } from '../loggger/logger.service';
+import { apiMethodsName } from 'src/utils/api/apiMethodsName';
 
 @Injectable()
 export class UserService {
   constructor(
     private prisma: PrismaService,
-    private logger: LoggerKafkaService,
+    private logger: LoggerService,
   ) {}
 
   async create(data: CreateUserDto): Promise<object> {
@@ -39,10 +41,11 @@ export class UserService {
       this.logger.error(`Error creating user: ${error.message}`);
       throw new BadRequestException('Error creating user');
     }
-    return { message: apiMethodsName.post };
+    return { message: apiMethodsName['000'] };
   }
 
   async findAll(limit: string, page: string): Promise<SendData | User[]> {
+    this.logger.debug("NOSE XD")
     const pageQuery = limit && page ? page : (page = '1');
     if (limit) {
       const usersQuery = await this.prisma.users.findMany({

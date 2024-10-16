@@ -1,7 +1,8 @@
 import { ExceptionFilter, Catch, ServiceUnavailableException, ArgumentsHost } from '@nestjs/common';
 import { Response } from 'express';
 import { LoggerService } from '../loggger/logger.service';
-import { apiExceptionConfig, apiMethodsName } from 'src/utils/api/apiExceptionConfig';
+import { apiExceptionConfig } from 'src/utils/api/apiExceptionConfig';
+import { apiMethodsName } from 'src/utils/api/apiMethodsName';
 
 @Catch(ServiceUnavailableException)
 export class ServiceUnavailableExceptionFilter implements ExceptionFilter {

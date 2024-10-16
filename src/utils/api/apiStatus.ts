@@ -1,104 +1,301 @@
-export const apiEntityName: string = 'Users';
+import { apiBaseEntityName } from './apiBaseEntity';
+import { apiMethodsName } from './apiMethodsName';
 
 export const apiStatus = {
   ok: {
-    type: 'Success',
-    httpcode: 200,
-    message: 'Successful retrieval of identification types',
-    example: {
-      httpcode: 200,
-      type: 'Success',
-      message: 'Successful retrieval of identification types',
+    status: 200,
+    description: 'Successful retrieval of identification types',
+    schema: {
+      type: 'object',
+      properties: {
+        identificationTypes: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'string',
+                description: 'Unique code for the identification type',
+              },
+              name: {
+                type: 'string',
+                description: 'Name of the identification type',
+              },
+            },
+          },
+        },
+      },
+    },
+    content: {
+      'application/json': {
+        schema: {
+          type: 'object',
+          properties: {
+            identificationTypes: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  id: {
+                    type: 'string',
+                    description: 'Unique code for the identification type',
+                  },
+                  name: {
+                    type: 'string',
+                    description: 'Name of the identification type',
+                  },
+                },
+              },
+            },
+          },
+        },
+        example: {
+          identificationTypes: [
+            {
+              id: 'ID_CARD',
+              name: 'ID Card',
+            },
+            {
+              id: 'PASSPORT',
+              name: 'Passport',
+            },
+          ],
+        },
+      },
     },
   },
   badRequest: {
-    type: 'Error',
-    httpcode: 400,
-    message: 'Bad request due to invalid syntax or parameters',
+    status: 400,
+    description: 'Bad Request',
+    schema: {
+      $ref: '#/components/schemas/Error',
+    },
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/Error',
+        },
+        example: {
+          code: 'Bad Request',
+          message: 'Invalid parameters were provided',
+          timestamp: new Date().toISOString(),
+          service: apiMethodsName.post, // Ajuste de servicio de acuerdo con el método
+        },
+      },
+    },
     example: {
-      httpcode: 400,
-      type: 'Error',
+      code: 'Bad Request',
       message: 'Invalid parameters were provided',
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName.post, // Ajuste de servicio de acuerdo con el método
     },
   },
   unauthorized: {
-    type: 'Error',
-    httpcode: 401,
-    message: 'Authentication is required and has failed or not been provided',
+    status: 401,
+    description: 'Authentication required',
+    schema: {
+      $ref: '#/components/schemas/Error',
+    },
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/Error',
+        },
+        example: {
+          code: 'Unauthorized',
+          message: 'Authentication failed or not provided',
+          timestamp: new Date().toISOString(),
+          service: apiMethodsName.get, // Ajuste de servicio según el método
+        },
+      },
+    },
     example: {
-      httpcode: 401,
-      type: 'Error',
+      code: 'Unauthorized',
       message: 'Authentication failed or not provided',
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName.get,
     },
   },
   forbidden: {
-    type: 'Error',
-    httpcode: 403,
-    message: 'Access to the resource is forbidden',
+    status: 403,
+    description: 'Access forbidden',
+    schema: {
+      $ref: '#/components/schemas/Error',
+    },
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/Error',
+        },
+        example: {
+          code: 'Forbidden',
+          message: 'You do not have permission to access this resource',
+          timestamp: new Date().toISOString(),
+          service: apiMethodsName.get,
+        },
+      },
+    },
     example: {
-      httpcode: 403,
-      type: 'Error',
+      code: 'Forbidden',
       message: 'You do not have permission to access this resource',
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName.get,
     },
   },
   notFound: {
-    type: 'Error',
-    httpcode: 404,
-    message: `${apiEntityName} not found`,
+    status: 404,
+    description: `${apiBaseEntityName} not found`,
+    schema: {
+      $ref: '#/components/schemas/Error',
+    },
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/Error',
+        },
+        example: {
+          code: 'Not Found',
+          message: `${apiBaseEntityName} not found`,
+          timestamp: new Date().toISOString(),
+          service: apiMethodsName.get,
+        },
+      },
+    },
     example: {
-      httpcode: 404,
-      type: 'Error',
-      message: `${apiEntityName} not found`,
+      code: 'Not Found',
+      message: `${apiBaseEntityName} not found`,
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName.get,
     },
   },
   methodNotAllowed: {
-    type: 'Error',
-    httpcode: 405,
-    message: 'Method not allowed for this resource',
+    status: 405,
+    description: 'Method not allowed',
+    schema: {
+      $ref: '#/components/schemas/Error',
+    },
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/Error',
+        },
+        example: {
+          code: 'Method Not Allowed',
+          message: 'The method is not allowed for this endpoint',
+          timestamp: new Date().toISOString(),
+          service: apiMethodsName.post, // Ajuste del método
+        },
+      },
+    },
     example: {
-      httpcode: 405,
-      type: 'Error',
+      code: 'Method Not Allowed',
       message: 'The method is not allowed for this endpoint',
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName.post,
     },
   },
   requestTimeout: {
-    type: 'Error',
-    httpcode: 408,
-    message: 'Request timeout',
+    status: 408,
+    description: 'Request timeout',
+    schema: {
+      $ref: '#/components/schemas/Error',
+    },
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/Error',
+        },
+        example: {
+          code: 'Request Timeout',
+          message: 'The request took too long to complete',
+          timestamp: new Date().toISOString(),
+          service: apiMethodsName.get,
+        },
+      },
+    },
     example: {
-      httpcode: 408,
-      type: 'Error',
+      code: 'Request Timeout',
       message: 'The request took too long to complete',
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName.get,
     },
   },
   conflict: {
-    type: 'Error',
-    httpcode: 409,
-    message: 'A conflict occurred due to business rule violations',
+    status: 409,
+    description: 'Conflict in the request',
+    schema: {
+      $ref: '#/components/schemas/Error',
+    },
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/Error',
+        },
+        example: {
+          code: 'Conflict',
+          message: 'Business rule conflict occurred',
+          timestamp: new Date().toISOString(),
+          service: apiMethodsName.post,
+        },
+      },
+    },
     example: {
-      httpcode: 409,
-      type: 'Error',
+      code: 'Conflict',
       message: 'Business rule conflict occurred',
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName.put,
     },
   },
   internalServerError: {
-    type: 'Error',
-    httpcode: 500,
-    message: 'Internal server error occurred while processing the request',
+    status: 500,
+    description: 'Internal server error occurred while processing the request',
+    schema: {
+      $ref: '#/components/schemas/Error',
+    },
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/Error',
+        },
+        example: {
+          code: 'Internal Server Error',
+          message: 'An unexpected error occurred on the server',
+          timestamp: new Date().toISOString(),
+          service: apiMethodsName.get,
+        },
+      },
+    },
     example: {
-      httpcode: 500,
-      type: 'Error',
+      code: 'Internal Server Error',
       message: 'An unexpected error occurred on the server',
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName.get,
     },
   },
   serviceUnavailable: {
-    type: 'Error',
-    httpcode: 503,
-    message: 'Service is currently unavailable',
+    status: 503,
+    description: 'Service temporarily unavailable',
+    schema: {
+      $ref: '#/components/schemas/Error',
+    },
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/Error',
+        },
+        example: {
+          code: 'Service Unavailable',
+          message: 'The service is temporarily unavailable, please try again later',
+          timestamp: new Date().toISOString(),
+          service: apiMethodsName.get,
+        },
+      },
+    },
     example: {
-      httpcode: 503,
-      type: 'Error',
+      code: 'Service Unavailable',
       message: 'The service is temporarily unavailable, please try again later',
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName.get,
     },
   },
 };
