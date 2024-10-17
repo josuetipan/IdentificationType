@@ -5,5 +5,6 @@ export const apiMethodsName = {
   post: `Save ${apiBaseEntityName}`,
   put: `Upadte ${apiBaseEntityName}`,
   delete: `Remove ${apiBaseEntityName}`,
+  service: `${apiBaseEntityName}`,
   '000': `Exito ${apiBaseEntityName}`,
 };

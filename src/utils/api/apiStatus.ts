@@ -120,6 +120,48 @@ export const apiStatus = {
       service: apiMethodsName.get,
     },
   },
+  methodNotserviceowed: {
+    status: 405,
+    description: `${apiBaseEntityName} method not serviceowed`,
+    type: ErrorDto,
+    content: {
+      'application/json': {
+        example: {
+          code: '405',
+          message: `${apiBaseEntityName} method not serviceowed`,
+          timestamp: new Date().toISOString(),
+          service: apiMethodsName.service,
+        },
+      },
+    },
+    example: {
+      code: '405',
+      message: `${apiBaseEntityName} method not serviceowed`,
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName.service,
+    },
+  },
+  requestTimeout: {
+    status: 408,
+    description: `Request timed out while waiting for ${apiBaseEntityName}`,
+    type: ErrorDto,
+    content: {
+      'application/json': {
+        example: {
+          code: '408',
+          message: `Request timed out while waiting for ${apiBaseEntityName}`,
+          timestamp: new Date().toISOString(),
+          service: apiMethodsName.service,
+        },
+      },
+    },
+    example: {
+      code: '408',
+      message: `Request timed out while waiting for ${apiBaseEntityName}`,
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName.service,
+    },
+  },
   conflict: {
     status: 409,
     description: 'Conflict in the request',
@@ -160,6 +202,27 @@ export const apiStatus = {
       message: 'An unexpected error occurred on the server',
       timestamp: new Date().toISOString(),
       service: apiMethodsName.get,
+    },
+  },
+  serviceUnavailable: {
+    status: 503,
+    description: `Service unavailable for ${apiBaseEntityName}`,
+    type: ErrorDto,
+    content: {
+      'application/json': {
+        example: {
+          code: '503',
+          message: `Service unavailable for ${apiBaseEntityName}`,
+          timestamp: new Date().toISOString(),
+          service: apiMethodsName.service,
+        },
+      },
+    },
+    example: {
+      code: '503',
+      message: `Service unavailable for ${apiBaseEntityName}`,
+      timestamp: new Date().toISOString(),
+      service: apiMethodsName.service,
     },
   },
 };

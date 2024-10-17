@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from './core/infrastructure/adaptarts/modules/user.module';
-import { ConfigModule } from '@nestjs/config';
+//import { ConfigModule } from '@nestjs/config';
 //import { ConfigModule } from '@nestjs/config';
 
 @Module({
