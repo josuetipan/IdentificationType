@@ -11,7 +11,7 @@ import { User } from 'src/core/domain/user.entity';
 import { SendData } from '../dtos/sendData-user.dto';
 import { apiBaseEntityName } from 'src/utils/api/apiEntites';
 import { LoggerService } from '../loggger/logger.service';
-import { apiMethodsName } from 'src/utils/api/userEntity/apiMethodsName';
+import { apiMethodsName } from 'src/utils/api/apiMethodsName';
 
 @Injectable()
 export class UserService {
