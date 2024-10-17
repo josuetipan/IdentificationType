@@ -9,9 +9,9 @@ import { UpdateUserDto } from '../dtos/update-user.dto';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { User } from 'src/core/domain/user.entity';
 import { SendData } from '../dtos/sendData-user.dto';
-import { apiBaseEntityName } from 'src/utils/api/apiBaseEntity';
+import { apiBaseEntityName } from 'src/utils/api/apiEntites';
 import { LoggerService } from '../loggger/logger.service';
-import { apiMethodsName } from 'src/utils/api/apiMethodsName';
+import { apiMethodsName } from 'src/utils/api/userEntity/apiMethodsName';
 
 @Injectable()
 export class UserService {
@@ -81,7 +81,7 @@ export class UserService {
     } catch (error) {
       // Aquí puedes lanzar una excepción diferente si es necesario, pero asegurate de que sea NotFoundException
       throw new NotFoundException(
-        `${apiBaseEntityName} not found for ID: ${id}`,
+        `${apiBaseEntityName} not found for ID: ${id}` + error,
       );
     }
   }

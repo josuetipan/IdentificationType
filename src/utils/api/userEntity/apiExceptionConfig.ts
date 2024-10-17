@@ -1,4 +1,4 @@
-import { apiBaseEntityName } from './apiBaseEntity';
+import { apiBaseEntityName } from '../apiEntites';
 import { apiMethodsName } from './apiMethodsName';
 
 export const apiExceptionConfig = {

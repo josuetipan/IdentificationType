@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { LoggerService } from '../loggger/logger.service';
-import { apiExceptionConfig } from 'src/utils/api/apiExceptionConfig'; // Asegúrate de que la ruta sea correcta
-import { apiMethodsName } from 'src/utils/api/apiMethodsName';
+import { apiExceptionConfig } from 'src/utils/api/userEntity/apiExceptionConfig'; // Asegúrate de que la ruta sea correcta
+import { apiMethodsName } from 'src/utils/api/userEntity/apiMethodsName';
 
 @Catch(ConflictException)
 export class ConflictExceptionFilter implements ExceptionFilter {

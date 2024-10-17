@@ -16,7 +16,7 @@ import { SendData } from 'src/core/application/dtos/sendData-user.dto';
 import { UpdateUserDto } from 'src/core/application/dtos/update-user.dto';
 import { UserService } from 'src/core/application/services/user.service';
 import { User } from 'src/core/domain/user.entity';
-import { Validator } from 'src/utils/api/apiValidations';
+import { Validator } from 'src/utils/api/userEntity/apiValidations';
 
 @ApiTags('/msa/users')
 @Controller('/msa/users')
@@ -37,6 +37,7 @@ export class UserController {
   @Get('1.0/:id')
   async getOneUser(@Param('id') id: string): Promise<User> {
     if (!Validator.isValidUUID(id)) {
+      console.log('Si si pase');
       throw new BadRequestException('The "id" parameter must be a valid UUID.');
     }
     return this.userService.findOne(id);

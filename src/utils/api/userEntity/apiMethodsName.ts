@@ -1,4 +1,4 @@
-import { apiBaseEntityName } from './apiBaseEntity';
+import { apiBaseEntityName } from '../apiEntites';
 
 export const apiMethodsName = {
   get: `Retrieves ${apiBaseEntityName}`,

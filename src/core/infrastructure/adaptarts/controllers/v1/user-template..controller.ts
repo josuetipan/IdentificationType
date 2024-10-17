@@ -16,8 +16,8 @@ import { SendData } from 'src/core/application/dtos/sendData-user.dto';
 import { UpdateUserDto } from 'src/core/application/dtos/update-user.dto';
 import { UserService } from 'src/core/application/services/user.service';
 import { User } from 'src/core/domain/user.entity';
-import { apiStatus, createEntity } from 'src/utils/api/apiStatus';
-import { Validator } from 'src/utils/api/apiValidations';
+import { apiStatus, createEntity } from 'src/utils/api/userEntity/apiStatus';
+import { Validator } from 'src/utils/api/userEntity/apiValidations';
 
 @ApiTags('pathDeTuServicio')
 @Controller('pathDeTuServicio')
