@@ -1,4 +1,9 @@
-import { ExceptionFilter, Catch, ForbiddenException, ArgumentsHost } from '@nestjs/common';
+import {
+  ExceptionFilter,
+  Catch,
+  ForbiddenException,
+  ArgumentsHost,
+} from '@nestjs/common';
 import { Response, Request } from 'express';
 import { LoggerService } from '../loggger/logger.service';
 import { apiExceptionConfig } from 'src/utils/api/apiExceptionConfig'; // Asegúrate de que la ruta sea correcta
@@ -14,9 +19,11 @@ export class ForbiddenExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
 
-    const customMessage = exception.message || apiExceptionConfig.forbidden.message; // Mensaje personalizado
+    const customMessage =
+      exception.message || apiExceptionConfig.forbidden.message; // Mensaje personalizado
     const httpMethod = request.method; // Obtener el método HTTP
-    const serviceName = apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName]; // Obtener el nombre del servicio
+    const serviceName =
+      apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName]; // Obtener el nombre del servicio
 
     // Estructura del log de error
     const errorLogs = {

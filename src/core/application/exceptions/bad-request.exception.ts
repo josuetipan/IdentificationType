@@ -46,8 +46,9 @@ export class BadRequestExceptionFilter implements ExceptionFilter {
 
     // Obtener el método HTTP
     const request = ctx.getRequest<Request>();
-    const httpMethod = request.method; 
-    const serviceName = apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName]; // Obtener el nombre del servicio
+    const httpMethod = request.method;
+    const serviceName =
+      apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName]; // Obtener el nombre del servicio
 
     // Registro del error utilizando el servicio de logger
     const errorLogs = JSON.stringify({
@@ -58,7 +59,7 @@ export class BadRequestExceptionFilter implements ExceptionFilter {
       errors: groupedErrors, // Incluyendo errores agrupados en el log
     });
     this.logger.error(errorLogs);
-    
+
     // Responder al cliente siguiendo la nueva estructura
     response.status(status).json({
       code: apiExceptionConfig.badRequest.code, // Tipo de error configurable

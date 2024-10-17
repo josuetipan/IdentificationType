@@ -1,11 +1,16 @@
-import { ExceptionFilter, Catch, HttpException, ArgumentsHost } from '@nestjs/common';
+import {
+  ExceptionFilter,
+  Catch,
+  HttpException,
+  ArgumentsHost,
+} from '@nestjs/common';
 import { Response, Request } from 'express';
 import { LoggerService } from '../loggger/logger.service';
 import { apiExceptionConfig } from 'src/utils/api/apiExceptionConfig';
 import { ValidationError } from 'class-validator';
 import { apiMethodsName } from 'src/utils/api/apiMethodsName';
 
-@Catch(HttpException) 
+@Catch(HttpException)
 export class MethodNotAllowedFilter implements ExceptionFilter {
   constructor(private readonly logger: LoggerService) {}
 
@@ -16,10 +21,10 @@ export class MethodNotAllowedFilter implements ExceptionFilter {
     const status = exception.getStatus();
     let groupedErrors: Record<string, string[]> = {};
     const exceptionResponse: any = exception.getResponse();
-      const validationErrors = exceptionResponse.message;
-      console.log(validationErrors);
-      
-      // Agrupar errores de validación
+    const validationErrors = exceptionResponse.message;
+    console.log(validationErrors);
+
+    // Agrupar errores de validación
     if (Array.isArray(validationErrors)) {
       groupedErrors = validationErrors.reduce(
         (acc: Record<string, string[]>, error: ValidationError | string) => {
@@ -41,9 +46,11 @@ export class MethodNotAllowedFilter implements ExceptionFilter {
     }
 
     if (status === 405 || status === 409) {
-      const customMessage = exception.message || apiExceptionConfig.methodNotAllowed.message; // Mensaje personalizado
+      const customMessage =
+        exception.message || apiExceptionConfig.methodNotAllowed.message; // Mensaje personalizado
       const httpMethod = request.method; // Obtener el método HTTP
-      const serviceName = apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName]; // Obtener el nombre del servicio
+      const serviceName =
+        apiMethodsName[httpMethod.toLowerCase() as keyof typeof apiMethodsName]; // Obtener el nombre del servicio
       const errorLogs = {
         code: exception.name, // Código del error configurable
         message: customMessage, // Mensaje personalizado
@@ -62,7 +69,10 @@ export class MethodNotAllowedFilter implements ExceptionFilter {
         code: apiExceptionConfig.methodNotAllowed.code, // Puedes ajustar esto según tu configuración
         message: exception.message,
         timestamp: new Date().toISOString(),
-        service: apiMethodsName[request.method.toLowerCase() as keyof typeof apiMethodsName],
+        service:
+          apiMethodsName[
+            request.method.toLowerCase() as keyof typeof apiMethodsName
+          ],
         errors: groupedErrors, // Incluyendo errores agrupados en el log
       };
 

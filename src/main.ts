@@ -24,14 +24,24 @@ async function bootstrap() {
   //Configurar el swaggwer
   const config = new DocumentBuilder()
     .setTitle('IdentificationType')
-    .setDescription(`Service that manages identification types such as ID card or passport for different roles`)
+    .setDescription(`Service that manages identification types such as
+      d or passport for different roles`)
     .setVersion('1.0.0')
     .build();
-  app.useGlobalFilters(new BadRequestExceptionFilter(logger), new NotFoundExceptionFilter(logger), new ConflictExceptionFilter(logger), new ForbiddenExceptionFilter(logger), new InternalServerErrorExceptionFilter(logger), new ServiceUnavailableExceptionFilter(logger), new UnauthorizedExceptionFilter(logger), new MethodNotAllowedFilter(logger));
+  app.useGlobalFilters(
+    new BadRequestExceptionFilter(logger),
+    new NotFoundExceptionFilter(logger),
+    new ConflictExceptionFilter(logger),
+    new ForbiddenExceptionFilter(logger),
+    new InternalServerErrorExceptionFilter(logger),
+    new ServiceUnavailableExceptionFilter(logger),
+    new UnauthorizedExceptionFilter(logger),
+    new MethodNotAllowedFilter(logger),
+  );
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   //Levantar Microservicio
-  await app.listen(appConfig.port,'0.0.0.0');
+  await app.listen(appConfig.port, '0.0.0.0');
   logger.log(
     `🚀 Microservice started on port ${appConfig.port} in ${appConfig.mode.toUpperCase()} mode`,
   );
