@@ -1,113 +1,78 @@
-import { apiBaseEntityName } from './apiBaseEntity';
+import { ErrorDto } from 'src/core/application/dtos/error.dto';
+import { apiBaseEntityName } from './apiEntites';
 import { apiMethodsName } from './apiMethodsName';
+import { ResponseDto } from 'src/core/application/dtos/response.dto';
+
+export const sendEntity = [
+  {
+    id: 'ID_CARD',
+    name: 'ID Card',
+  },
+  {
+    id: 'PASSPORT',
+    name: 'Passport',
+  },
+];
+export const createEntity = {
+  status: 201,
+  description: 'Success',
+  example: [
+    {
+      id: 'ID_CARD',
+      name: 'ID Card',
+    },
+  ],
+};
 
 export const apiStatus = {
   ok: {
     status: 200,
     description: 'Successful retrieval of identification types',
-    schema: {
-      type: 'object',
-      properties: {
-        identificationTypes: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: {
-                type: 'string',
-                description: 'Unique code for the identification type',
-              },
-              name: {
-                type: 'string',
-                description: 'Name of the identification type',
-              },
-            },
-          },
-        },
-      },
-    },
+    type: ResponseDto,
     content: {
       'application/json': {
-        schema: {
-          type: 'object',
-          properties: {
-            identificationTypes: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  id: {
-                    type: 'string',
-                    description: 'Unique code for the identification type',
-                  },
-                  name: {
-                    type: 'string',
-                    description: 'Name of the identification type',
-                  },
-                },
-              },
-            },
-          },
-        },
-        example: {
-          identificationTypes: [
-            {
-              id: 'ID_CARD',
-              name: 'ID Card',
-            },
-            {
-              id: 'PASSPORT',
-              name: 'Passport',
-            },
-          ],
-        },
+        example: sendEntity,
       },
     },
+    example: sendEntity,
   },
   badRequest: {
     status: 400,
     description: 'Bad Request',
-    schema: {
-      $ref: '#/components/schemas/Error',
-    },
+    type: ErrorDto,
     content: {
       'application/json': {
         example: {
-          code: 'Bad Request',
+          code: '400',
           message: 'Invalid parameters were provided',
           timestamp: new Date().toISOString(),
-          service: apiMethodsName.post, // Ajuste de servicio de acuerdo con el método
+          service: apiMethodsName.post,
         },
       },
     },
     example: {
-      code: 'Bad Request',
+      code: '400',
       message: 'Invalid parameters were provided',
       timestamp: new Date().toISOString(),
-      service: apiMethodsName.post, // Ajuste de servicio de acuerdo con el método
+      service: apiMethodsName.post,
     },
   },
   unauthorized: {
     status: 401,
     description: 'Authentication required',
-    schema: {
-      $ref: '#/components/schemas/Error',
-    },
+    type: ErrorDto,
     content: {
       'application/json': {
-        schema: {
-          $ref: '#/components/schemas/Error',
-        },
         example: {
-          code: 'Unauthorized',
+          code: '401',
           message: 'Authentication failed or not provided',
           timestamp: new Date().toISOString(),
-          service: apiMethodsName.get, // Ajuste de servicio según el método
+          service: apiMethodsName.get,
         },
       },
     },
     example: {
-      code: 'Unauthorized',
+      code: '401',
       message: 'Authentication failed or not provided',
       timestamp: new Date().toISOString(),
       service: apiMethodsName.get,
@@ -116,16 +81,11 @@ export const apiStatus = {
   forbidden: {
     status: 403,
     description: 'Access forbidden',
-    schema: {
-      $ref: '#/components/schemas/Error',
-    },
+    type: ErrorDto,
     content: {
       'application/json': {
-        schema: {
-          $ref: '#/components/schemas/Error',
-        },
         example: {
-          code: 'Forbidden',
+          code: '403',
           message: 'You do not have permission to access this resource',
           timestamp: new Date().toISOString(),
           service: apiMethodsName.get,
@@ -133,7 +93,7 @@ export const apiStatus = {
       },
     },
     example: {
-      code: 'Forbidden',
+      code: '403',
       message: 'You do not have permission to access this resource',
       timestamp: new Date().toISOString(),
       service: apiMethodsName.get,
@@ -142,16 +102,11 @@ export const apiStatus = {
   notFound: {
     status: 404,
     description: `${apiBaseEntityName} not found`,
-    schema: {
-      $ref: '#/components/schemas/Error',
-    },
+    type: ErrorDto,
     content: {
       'application/json': {
-        schema: {
-          $ref: '#/components/schemas/Error',
-        },
         example: {
-          code: 'Not Found',
+          code: '404',
           message: `${apiBaseEntityName} not found`,
           timestamp: new Date().toISOString(),
           service: apiMethodsName.get,
@@ -159,77 +114,62 @@ export const apiStatus = {
       },
     },
     example: {
-      code: 'Not Found',
+      code: '404',
       message: `${apiBaseEntityName} not found`,
       timestamp: new Date().toISOString(),
       service: apiMethodsName.get,
     },
   },
-  methodNotAllowed: {
+  methodNotserviceowed: {
     status: 405,
-    description: 'Method not allowed',
-    schema: {
-      $ref: '#/components/schemas/Error',
-    },
+    description: `${apiBaseEntityName} method not serviceowed`,
+    type: ErrorDto,
     content: {
       'application/json': {
-        schema: {
-          $ref: '#/components/schemas/Error',
-        },
         example: {
-          code: 'Method Not Allowed',
-          message: 'The method is not allowed for this endpoint',
+          code: '405',
+          message: `${apiBaseEntityName} method not serviceowed`,
           timestamp: new Date().toISOString(),
-          service: apiMethodsName.post, // Ajuste del método
+          service: apiMethodsName.service,
         },
       },
     },
     example: {
-      code: 'Method Not Allowed',
-      message: 'The method is not allowed for this endpoint',
+      code: '405',
+      message: `${apiBaseEntityName} method not serviceowed`,
       timestamp: new Date().toISOString(),
-      service: apiMethodsName.post,
+      service: apiMethodsName.service,
     },
   },
   requestTimeout: {
     status: 408,
-    description: 'Request timeout',
-    schema: {
-      $ref: '#/components/schemas/Error',
-    },
+    description: `Request timed out while waiting for ${apiBaseEntityName}`,
+    type: ErrorDto,
     content: {
       'application/json': {
-        schema: {
-          $ref: '#/components/schemas/Error',
-        },
         example: {
-          code: 'Request Timeout',
-          message: 'The request took too long to complete',
+          code: '408',
+          message: `Request timed out while waiting for ${apiBaseEntityName}`,
           timestamp: new Date().toISOString(),
-          service: apiMethodsName.get,
+          service: apiMethodsName.service,
         },
       },
     },
     example: {
-      code: 'Request Timeout',
-      message: 'The request took too long to complete',
+      code: '408',
+      message: `Request timed out while waiting for ${apiBaseEntityName}`,
       timestamp: new Date().toISOString(),
-      service: apiMethodsName.get,
+      service: apiMethodsName.service,
     },
   },
   conflict: {
     status: 409,
     description: 'Conflict in the request',
-    schema: {
-      $ref: '#/components/schemas/Error',
-    },
+    type: ErrorDto,
     content: {
       'application/json': {
-        schema: {
-          $ref: '#/components/schemas/Error',
-        },
         example: {
-          code: 'Conflict',
+          code: '409',
           message: 'Business rule conflict occurred',
           timestamp: new Date().toISOString(),
           service: apiMethodsName.post,
@@ -237,25 +177,20 @@ export const apiStatus = {
       },
     },
     example: {
-      code: 'Conflict',
+      code: '409',
       message: 'Business rule conflict occurred',
       timestamp: new Date().toISOString(),
-      service: apiMethodsName.put,
+      service: apiMethodsName.post,
     },
   },
   internalServerError: {
     status: 500,
     description: 'Internal server error occurred while processing the request',
-    schema: {
-      $ref: '#/components/schemas/Error',
-    },
+    type: ErrorDto,
     content: {
       'application/json': {
-        schema: {
-          $ref: '#/components/schemas/Error',
-        },
         example: {
-          code: 'Internal Server Error',
+          code: '500',
           message: 'An unexpected error occurred on the server',
           timestamp: new Date().toISOString(),
           service: apiMethodsName.get,
@@ -263,7 +198,7 @@ export const apiStatus = {
       },
     },
     example: {
-      code: 'Internal Server Error',
+      code: '500',
       message: 'An unexpected error occurred on the server',
       timestamp: new Date().toISOString(),
       service: apiMethodsName.get,
@@ -271,28 +206,23 @@ export const apiStatus = {
   },
   serviceUnavailable: {
     status: 503,
-    description: 'Service temporarily unavailable',
-    schema: {
-      $ref: '#/components/schemas/Error',
-    },
+    description: `Service unavailable for ${apiBaseEntityName}`,
+    type: ErrorDto,
     content: {
       'application/json': {
-        schema: {
-          $ref: '#/components/schemas/Error',
-        },
         example: {
-          code: 'Service Unavailable',
-          message: 'The service is temporarily unavailable, please try again later',
+          code: '503',
+          message: `Service unavailable for ${apiBaseEntityName}`,
           timestamp: new Date().toISOString(),
-          service: apiMethodsName.get,
+          service: apiMethodsName.service,
         },
       },
     },
     example: {
-      code: 'Service Unavailable',
-      message: 'The service is temporarily unavailable, please try again later',
+      code: '503',
+      message: `Service unavailable for ${apiBaseEntityName}`,
       timestamp: new Date().toISOString(),
-      service: apiMethodsName.get,
+      service: apiMethodsName.service,
     },
   },
 };
