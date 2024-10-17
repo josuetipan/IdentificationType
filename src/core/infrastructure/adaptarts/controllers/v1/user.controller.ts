@@ -1,10 +1,12 @@
 import {
+  All,
   BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   HttpCode,
+  MethodNotAllowedException,
   Param,
   Post,
   Put,

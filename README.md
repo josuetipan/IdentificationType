@@ -2,81 +2,81 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-# Plantilla para Crear un Microservicio
+# Plantilla para crear un microservicio
 
 ## Descripción
 
-Esta plantilla te permite crear un microservicio basado en [NestJS](https://nestjs.com/) que incluye un ejemplo de gestión de usuarios. Viene preconfigurada con Prisma como gestor de bases de datos y utiliza una arquitectura hexagonal.
+Esta plantilla te permite crear un microservicio basado en [NestJS](https://nestjs.com/) con el ejemplo de gestión de usuarios. Incluye configuración para Prisma como gestor de bases de datos y está diseñada con una arquitectura hexagonal.
 
-## Cómo Empezar
+## Como empezar
 
-Clona el repositorio utilizando el método que prefieras.
+Clona el repositorio usando el metodo que gustes
 
-### Usando HTTP
+Usando HTTP
 
 ```bash
 git clone https://github.com/UnCompa/microservicio-plantilla
 ```
 
-### Usando SSH
+Usando SSH
 
 ```bash
 git clone git@github.com:UnCompa/microservicio-plantilla.git
 ```
 
-## Instalación de Dependencias
+## Instalar dependecias
 
-Al clonar la plantilla, ejecuta el siguiente comando para instalar los paquetes necesarios:
+Al clonar la plantilla ejecuta el comando para instalar los paquetes necesarios
 
-### Usando NPM
+Usando NPM
 
 ```bash
 npm install
 ```
 
-### Usando PNPM
+Usando PNPM
 
 ```bash
 pnpm install
 ```
 
-## Creación de Tablas con Prisma
+## Creacion de tablas con prisma
 
-Dado que el proyecto utiliza Prisma como gestor de la base de datos, sigue estos pasos:
+Dado que el proyecto usa prisma como gestor de la base de datos debes seguir estos pasos
 
 ```bash
-# 1. Inicializar Prisma
+#1. Empezar prisma
 $ npx prisma init
-# 2. Generar las tablas
+#2. Generar tablas
 $ npx prisma generate
-# 3. Crear migraciones
+#3. Generar migracion
 $ npx prisma migrate dev
 ```
 
-> [!IMPORTANTE]  
-> Ejecuta los pasos 1 y 2 para que el proyecto funcione correctamente. Asegúrate de configurar adecuadamente las variables de entorno de tu base de datos local.
+> [!IMPORTANT]
+> Ejecutar el paso 1 y 2 dos para que el proyecto funcione ademas de colocar correctamente las variables de entorno de tu base de datos local
 
-### Sincronizar Tablas
+### Sincronizar tablas
 
-Para importar los datos de la tabla, utiliza el siguiente comando:
+Para traer los datos de la tabla se usa el comando:
 
 ```bash
-# Para importar los datos de la tabla
+#Para traer los datos de la tabla
 $ npx prisma db pull
 ```
 
-Para enviar los cambios en los modelos, ejecuta:
+Para enviar los cambios en los modelos
 
 ```bash
-# Para enviar los cambios en los modelos
+#Para traer los datos de la tabla
 $ npx prisma db push
 ```
 
-## Ejecutar el Proyecto 🚀
+## Ejecutar el proyecto 🚀
 
-Una vez configurados Prisma y las variables de entorno, puedes compilar y ejecutar el proyecto con los siguientes comandos:
+Una vez que hayas configurado Prisma y las variables de entorno, puedes compilar y ejecutar el proyecto con los siguientes comandos:
 
-### Con NPM
+Con NPM
 
 ```bash
 # Desarrollo
@@ -88,11 +88,11 @@ $ npm run start:dev
 # Construir aplicación
 $ npm run build
 
-# Producción
+# Produccion
 $ npm run start:prod
 ```
 
-### Con PNPM
+Con PNPM
 
 ```bash
 # Desarrollo
@@ -104,47 +104,47 @@ $ pnpm run start:dev
 # Construir aplicación
 $ pnpm run build
 
-# Producción
+# Produccion
 $ pnpm run start:prod
 ```
 
-## Ejecutar Tests
+## Ejecutar tests
 
-### Con NPM
+Con NPM
 
 ```bash
-# Tests unitarios
+# unit tests
 $ npm run test
 
-# Tests end-to-end
+# e2e tests
 $ npm run test:e2e
 
-# Cobertura de tests
+# test coverage
 $ npm run test:cov
 ```
 
-### Con PNPM
+Con PNPM
 
 ```bash
-# Tests unitarios
+# unit tests
 $ pnpm run test
 
-# Tests end-to-end
+# e2e tests
 $ pnpm run test:e2e
 
-# Cobertura de tests
+# test coverage
 $ pnpm run test:cov
 ```
 
-## Uso de Docker 💿
+## Uso de docker 💿
 
-La plantilla incluye un Dockerfile que permite crear una imagen de tu proyecto:
+La plantilla ya tiene un dockerfile que permitira crear una imagen de tu proyecto
 
 ```bash
 docker build -t <nombre-de-imagen> .
 ```
 
-Para crear un contenedor, utiliza:
+Para crear un contenedor
 
 ```bash
 docker run -p 3000:3000 -e DATABASE_URL="postgresql://user:password@host:port/db" --name nombre-contenedor imagen
@@ -152,68 +152,67 @@ docker run -p 3000:3000 -e DATABASE_URL="postgresql://user:password@host:port/db
 
 ## Arquitectura 💻
 
-La arquitectura se basa en el patrón hexagonal, adaptada para la creación de microservicios.
+La arquitectura usada esta basada en la hexagonal, adaptada para la creacion de microservicios
 
 ![Imagen de la arquitectura](https://i.postimg.cc/t4nvmtWh/Slide-16-9-3-1.png)
 
-## Creación de Swagger
+## Creacion de swagger
 
-El proyecto incluye documentación generada con Swagger. Visita la URL de tu proyecto y navega a _/api_ para acceder a la documentación.
+El proyecto viene con documentacion con el uso de swagger, visita la url de tu proyecto y navega a */api* donde encontraras la documentacion generada.
 
 ### Exportar a YML
 
-Si deseas exportar la documentación al formato YML, sigue estos pasos:
+Si deseas exportar la documentacion al formato yml debes seguir ciertos pasos
 
-1. Instala la dependencia:
+- Instalar la dependecia
 
 ```bash
 npm install js-yaml
 ```
 
-2. Utiliza la dependencia:
+- Uso de la dependencia
 
 ```ts
-import * as yaml from 'js-yaml';
-import * as fs from 'fs';
+  import * as yaml from 'js-yaml';
+  import * as fs from 'fs';
 
-// Crea el documento JSON de Swagger
-const document = SwaggerModule.createDocument(app, config);
+  // Crea el documento JSON de Swagger
+  const document = SwaggerModule.createDocument(app, config);
 
-// Convierte el documento JSON a YAML
-const yamlDocument = yaml.dump(document);
+  // Convierte el documento JSON a YAML
+  const yamlDocument = yaml.dump(document);
 
-// Guarda el archivo YAML si es necesario
-fs.writeFileSync('./swagger.yml', yamlDocument);
-SwaggerModule.setup('api', app, document);
+  // Guarda el archivo YAML si es necesario
+  fs.writeFileSync('./swagger.yml', yamlDocument);
+  SwaggerModule.setup('api', app, document);
 ```
 
-## Guía de Uso 🎉
+## Guia de uso 🎉
 
-> **NOTA**  
-> La guía de uso está basada en pruebas realizadas previamente.
+> [!NOTE]
+> La guia de uso estara basada en pruebas hechas anteriormente
 
-Se explicará de forma general cómo crear un microservicio; en este ejemplo, se abordará la gestión de usuarios.
+Se explicara de forma general como crear un microservicio, para el ejemplo sera para la gestion de usuarios\
 
-### Carpetas Clave
+### Carpetas claves
 
-Dado que el proyecto sigue una arquitectura hexagonal, hay tres carpetas importantes:
+Dado que el proyecto sigue una arquitectua hexagonal como ejemplo para esta plantilla, tenemos tres carpetas importantes las cuales son:
 
-- **domain**: Contiene la definición de las entidades del microservicio, en este caso, la entidad de usuario.
-- **application**: Se encarga de crear servicios que se comunican con la capa de dominio.
-- **infrastructure**: Maneja los controladores que utilizan los servicios de la capa de aplicación.
+- **domain**: Explicacion de las entidades del microservicio, en este caso la de usuario
+- **application**: Creacion de servicios que se comunican con la capa de dominio
+- **infrastructure**: Manejo de controladores que usan los servicios de la capa de aplicacion
 
 ### Dominio
 
-A continuación, se muestra cómo luce la entidad del microservicio:
+Se especifica como luce la entidad del microservicio
 
 ```ts
-/* user.entity.ts */
-// Definir entidad para la lógica de negocio
+/*user.entity.ts*/
+//Definir entidad para la logica de negocio
 export class User {
   id: string;
   name: string;
   email: string;
-
   constructor(id: string, name: string, email: string) {
     this.id = id;
     this.name = name;
@@ -222,8 +221,8 @@ export class User {
 }
 ```
 
-> **IMPORTANTE**  
-> Dado que el proyecto utiliza Prisma, no se emplea la entidad en sí; se usa el modelo para la creación de entidades. Esta capa sirve como guía para comprender la lógica de negocio.
+> [!IMPORTANT]
+> Dado que el proyecto hace uso de prisma no se usa la entidad como tal, se usa el modelo para la cracion de entidades, entonces esta capa sirve de guia para entender la logica de negocio
 
 ```prisma
 model User {
@@ -233,10 +232,12 @@ model User {
 }
 ```
 
-### Aplicación
+### Aplicacion
 
-Aquí se crean los servicios para interactuar con la capa de dominio. Las carpetas incluyen los DTOs, loggers, conexión con Prisma, y el servicio para la entidad. La carpeta del servicio es fundamental, en este caso, la de usuario.
+Aqui se crean los esrvicios para comunicarse con la capa de dominio, hay carpetas las cuales son para los DTOs, loggers, conexion con prisma, y el servicio para la entidad
 
-### Infraestructura
+El mas imporntante seria la capeta del servicio para la entidad en este caso el de user
 
-En esta capa, se crean los controladores para establecer la comunicación entre el cliente y el servidor, así como el módulo de comunicación.
+### Infrastructure
+
+Aqui se crea los controladores para hacer la comunicacion entre el cliente y el servidor ademas de establecer el modulo de comunicacion
