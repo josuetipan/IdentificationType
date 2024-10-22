@@ -1,7 +1,8 @@
 // logger.service.ts
 import { Injectable } from '@nestjs/common';
 import { Logger, createLogger, format, transports } from 'winston';
-import 'winston-daily-rotate-file';
+import  'winston-daily-rotate-file';
+import { Kafka } from 'kafkajs';
 
 @Injectable()
 export class LoggerService {
@@ -9,11 +10,16 @@ export class LoggerService {
   private loggerError: Logger;
   private loggerDebug: Logger;
   private loggerAll: Logger;
+  private kafkaProducer;
+  
 
   constructor() {
     // Inicializamos el KafkaLogger con el broker y el tópico deseado
+    this.kafkaProducer;
     this.createLoggers(); // Creamos los loggers de Winston
   }
+
+  
 
   createLoggers() {
     const textFormat = format.combine(
@@ -83,7 +89,6 @@ export class LoggerService {
   }
   async log(message: string) {
     const levelLogger = process.env.LOG_LEVEL ?? "debug"
-    console.log(levelLogger);
     if (levelLogger === "info") {
       this.loggerInfo.info(message);
     }
@@ -104,10 +109,8 @@ export class LoggerService {
   
   async debug(message: string) {
     const levelLogger = process.env.LOG_LEVEL ?? "debug"
-    console.log(levelLogger);
     
     if(levelLogger === "debug") {
-      console.log("Si entre");
       this.loggerDebug.debug(message);
     }
     this.loggerAll.debug(message)

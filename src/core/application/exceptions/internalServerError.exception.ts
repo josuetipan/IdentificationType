@@ -1,42 +1,38 @@
 import {
   ExceptionFilter,
   Catch,
-  ConflictException,
+  InternalServerErrorException,
   ArgumentsHost,
 } from '@nestjs/common';
 import { Response, Request } from 'express';
-import { apiExceptionConfig } from 'src/utils/api/apiExceptionConfig';
+import { apiExceptionConfig } from 'src/utils/api/apiExceptionConfig'; // Asegúrate de que la ruta sea correcta
 import { apiMethodsName, apiMethods } from 'src/utils/api/apiMethodsName';
 import { LoggerService } from '../loggger/logger.service';
 import { LoggerKafkaService } from '../loggger/loggerKafka.service';
 
-@Catch(ConflictException)
-export class ConflictExceptionFilter implements ExceptionFilter {
+@Catch(InternalServerErrorException)
+export class InternalServerErrorExceptionFilter implements ExceptionFilter {
   constructor(private readonly logger: LoggerService) {
     if (process.env.USE_KAFKA) {
       this.logger = new LoggerKafkaService();
     }
   }
 
-  catch(exception: ConflictException, host: ArgumentsHost) {
+  catch(exception: InternalServerErrorException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
-
-    // Tomamos el mensaje personalizado de la excepción o el mensaje por defecto
-    const customMessage =
-      exception.message || apiExceptionConfig.conflict.message;
-
-    // Obtener el método HTTP y la configuración de la ruta
     const httpMethod = request.method;
-    const routeConfig = this.getRouteConfig(httpMethod, request.url);
-    const entity = routeConfig?.entity || this.getEntityFromMethod(httpMethod);
 
-    // Estructura del log de error
+    // Obtener la configuración de la ruta o usar la entidad predeterminada
+    const routeConfig = this.getRouteConfig(httpMethod, request.url);
+    const entity = routeConfig.entity || this.getEntityFromMethod(httpMethod);
+
+    // Crear los logs de error
     const errorLogs = this.createErrorLog(
       status,
-      customMessage,
+      exception.message,
       httpMethod,
       entity,
     );
@@ -48,16 +44,16 @@ export class ConflictExceptionFilter implements ExceptionFilter {
     response.status(status).json(errorLogs);
   }
 
-  // Obtener la configuración de la ruta basada en el método HTTP y la URL
+  // Obtener la configuración de la ruta con una opción por defecto si no se encuentra coincidencia
   private getRouteConfig(httpMethod: string, url: string) {
     const defaultRouteConfig = {
-      entity: this.getEntityFromMethod(httpMethod), // Usar entidad predeterminada basada en el método HTTP
-      method: httpMethod,
-      path: url, // Ruta genérica por defecto
+      entity: this.getEntityFromMethod(httpMethod), // Usar getEntityFromMethod como valor por defecto
+      method: httpMethod, // Usar el método HTTP actual
+      path: url, // Ruta genérica
     };
 
     return (
-      apiExceptionConfig.conflict.routes.find(
+      apiExceptionConfig.internalServerError?.routes.find(
         (route) => route.method === httpMethod && url.startsWith(route.path),
       ) || defaultRouteConfig
     );
@@ -73,15 +69,15 @@ export class ConflictExceptionFilter implements ExceptionFilter {
   // Crear los logs de error
   private createErrorLog(
     status: number,
-    customMessage: string,
+    customMessage: string | undefined,
     httpMethod: string,
     entity: string,
   ) {
     return {
-      code: apiExceptionConfig.conflict.code, // Código del error configurable
-      message: customMessage, // Mensaje personalizado
+      code: apiExceptionConfig.internalServerError.code, // Código del error configurable
+      message: customMessage || apiExceptionConfig.internalServerError.message, // Mensaje personalizado o predeterminado
       timestamp: new Date().toISOString(), // Timestamp actual
-      service: apiMethods(httpMethod, entity), // Incluir el nombre del servicio basado en el método y la entidad
+      service: apiMethods(httpMethod, entity), // Incluir el nombre del servicio
     };
   }
 }

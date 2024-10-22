@@ -1,7 +1,7 @@
 import {
   ExceptionFilter,
   Catch,
-  UnauthorizedException,
+  ServiceUnavailableException,
   ArgumentsHost,
 } from '@nestjs/common';
 import { Response } from 'express';
@@ -10,28 +10,28 @@ import { apiMethodsName } from 'src/utils/api/apiMethodsName';
 import { LoggerService } from '../loggger/logger.service';
 import { LoggerKafkaService } from '../loggger/loggerKafka.service';
 
-@Catch(UnauthorizedException)
-export class UnauthorizedExceptionFilter implements ExceptionFilter {
+@Catch(ServiceUnavailableException)
+export class ServiceUnavailableExceptionFilter implements ExceptionFilter {
   constructor(private readonly logger: LoggerService) {
     if (process.env.USE_KAFKA) {
       this.logger = new LoggerKafkaService();
     }
   }
 
-  catch(exception: UnauthorizedException, host: ArgumentsHost) {
+  catch(exception: ServiceUnavailableException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest(); // Obtener el objeto de solicitud
     const httpMethod = request.method; // Obtener el método HTTP
 
-    const status = 401; // Código de estado 401 para Unauthorized
+    const status = 503; // Configuramos el estado a 503
 
     // Mensaje personalizado
     const customMessage = this.getCustomMessage(httpMethod);
     const serviceName = this.getServiceName(httpMethod); // Llama a la función para obtener el nombre del servicio
 
     const errorLogs = {
-      code: apiExceptionConfig.unauthorized.code, // Código del error configurable
+      code: apiExceptionConfig.serviceUnavailable.code, // Código del error configurable
       message: customMessage, // Mensaje personalizado
       timestamp: new Date().toISOString(), // Timestamp actual
       service: serviceName, // Nombre del servicio
@@ -48,15 +48,15 @@ export class UnauthorizedExceptionFilter implements ExceptionFilter {
   private getCustomMessage(httpMethod: string): string {
     switch (httpMethod) {
       case 'GET':
-        return 'Unauthorized access for GET requests. Please authenticate.';
+        return 'Service unavailable for GET requests. Please try again later.';
       case 'POST':
-        return 'Unauthorized access for POST requests. Please authenticate.';
+        return 'Service unavailable for POST requests. Please try again later.';
       case 'PUT':
-        return 'Unauthorized access for PUT requests. Please authenticate.';
+        return 'Service unavailable for PUT requests. Please try again later.';
       case 'DELETE':
-        return 'Unauthorized access for DELETE requests. Please authenticate.';
+        return 'Service unavailable for DELETE requests. Please try again later.';
       default:
-        return apiExceptionConfig.unauthorized.message; // Mensaje por defecto
+        return apiExceptionConfig.serviceUnavailable.message; // Mensaje por defecto
     }
   }
 

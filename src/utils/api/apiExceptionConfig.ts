@@ -1,5 +1,8 @@
-import { apiBaseEntityName } from './apiBaseEntity'
+import { apiBaseEntityName } from './apiEntites';
 import { apiMethodsName } from './apiMethodsName';
+import { routesExceptions } from './apiRoutesExceptions';
+
+//Para usarlo en el swagger
 
 export const apiExceptionConfig = {
   notFound: {
@@ -13,11 +16,7 @@ export const apiExceptionConfig = {
       timestamp: new Date().toISOString(),
       service: apiMethodsName.get,
     },
-    routes: [
-      { method: 'DELETE', path: '/msa/identificationtypes/1.0' },
-      { method: 'PUT', path: '/msa/identificationtypes/1.0' },
-      // Agrega más rutas aquí
-    ],
+    routes: routesExceptions.notFound,
   },
   badRequest: {
     code: 'Bad Request',
@@ -30,6 +29,7 @@ export const apiExceptionConfig = {
       timestamp: new Date().toISOString(),
       service: 'User Service',
     },
+    routes: routesExceptions.badRequest,
   },
   methodNotAllowed: {
     code: 'Method Not Allowed',
@@ -42,6 +42,7 @@ export const apiExceptionConfig = {
       timestamp: new Date().toISOString(),
       service: 'User Service',
     },
+    routes: routesExceptions.methodNotAllowed ?? [],
   },
   unauthorized: {
     code: 'Unauthorized',
@@ -54,6 +55,7 @@ export const apiExceptionConfig = {
       timestamp: new Date().toISOString(),
       service: 'User Service',
     },
+    routes: routesExceptions.unauthorized ?? [],
   },
   forbidden: {
     code: 'Forbidden',
@@ -66,6 +68,7 @@ export const apiExceptionConfig = {
       timestamp: new Date().toISOString(),
       service: 'User Service',
     },
+    routes: routesExceptions.forbidden ?? [],
   },
   conflict: {
     code: 'Conflicting',
@@ -78,6 +81,7 @@ export const apiExceptionConfig = {
       timestamp: new Date().toISOString(),
       service: 'User Service',
     },
+    routes: routesExceptions.badRequest,
   },
   internalServerError: {
     code: 'Internal Server Error',
@@ -90,6 +94,7 @@ export const apiExceptionConfig = {
       timestamp: new Date().toISOString(),
       service: 'User Service',
     },
+    routes: routesExceptions.internalServerError,
   },
   serviceUnavailable: {
     code: 'Unavailable',
@@ -102,6 +107,7 @@ export const apiExceptionConfig = {
       timestamp: new Date().toISOString(),
       service: 'User Service',
     },
+    routes: routesExceptions.serviceUnavailable,
   },
   validation: {
     routes: {

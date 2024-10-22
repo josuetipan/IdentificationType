@@ -11,22 +11,27 @@ import {
   Post,
   Put,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserService } from 'src/core/application/services/identification.service';
+import { CheckDatabaseConnectionGuard } from 'src/core/application/decorators/check-database.decorator';
+import { IdenditicatioService } from 'src/core/application/services/identification.service';
 import { Identification} from 'src/core/domain/identification.entity';
 import { apiStatus } from 'src/utils/api/apiStatus';
 
 @ApiTags('/msa/users')
 @Controller('/msa')
-export class UserController {
-  constructor(private userService: UserService) {}
+@UseGuards(CheckDatabaseConnectionGuard)
+export class IdentificationTypeController {
+  constructor(private identificationTypeService: IdenditicatioService) {}
 
   @ApiResponse(apiStatus.ok)
   @ApiResponse(apiStatus.badRequest)
   @ApiResponse(apiStatus.unauthorized)
   @ApiResponse(apiStatus.forbidden)
-  @ApiResponse(apiStatus.methodNotAllowed)
+  @ApiResponse(apiStatus.methodNotserviceowed)//405
+  @ApiResponse(apiStatus.requestTimeout)
   @ApiResponse(apiStatus.internalServerError)
   @ApiResponse(apiStatus.serviceUnavailable)
   @ApiResponse(apiStatus.conflict)
@@ -34,7 +39,8 @@ export class UserController {
   
 
   @Get('/retrieveidentificationtypes/1.0')
-  async getAllUsers(): Promise<Identification[]> {
-    return this.userService.findAll();
+  async getAllIdentificationType(@Req() req): Promise<Identification[]> {
+    console.log(req.status);
+    return this.identificationTypeService.findAll(req.status);
   }
 }

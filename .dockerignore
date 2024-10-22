@@ -1,4 +1,17 @@
+# Ignorar dependencias de desarrollo
 node_modules
-dist
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Ignorar archivos de configuración locales
+.DS_Store
+.env
+.env.*.local
+
+# Ignorar carpetas innecesarias
+.vscode
 .git
-pnpm-lock.yaml
+coverage
+tests
+dist
