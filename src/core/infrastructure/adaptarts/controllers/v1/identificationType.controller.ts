@@ -17,7 +17,7 @@ import {
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CheckDatabaseConnectionGuard } from 'src/core/application/decorators/check-database.decorator';
 import { IdenditicatioService } from 'src/core/application/services/identification.service';
-import { Identification} from 'src/core/domain/identification.entity';
+import { Identification} from 'src/core/domain/identificationType.entity';
 import { apiStatus } from 'src/utils/api/apiStatus';
 
 @ApiTags('/msa/users')

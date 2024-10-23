@@ -1,9 +1,9 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { IdentificationTypeController } from '../controllers/v1/Identification.controller';
+import { IdentificationTypeController } from '../controllers/v1/identificationType.controller';
 import { PrismaService } from 'src/core/application/prisma/prisma.service';
 import { LoggerModule } from 'src/core/application/loggger/logger.module';
 import { IdenditicatioService } from 'src/core/application/services/identification.service';
-import { Identification } from '../../../domain/identification.entity';
+import { Identification } from '../../../domain/identificationType.entity';
 
 @Module({
   imports: [LoggerModule.register(process.env.USE_KAFKA === 'true')],
