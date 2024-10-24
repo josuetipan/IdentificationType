@@ -20,8 +20,7 @@ import { IdenditicatioService } from 'src/core/application/services/identificati
 import { Identification} from 'src/core/domain/identificationType.entity';
 import { apiStatus } from 'src/utils/api/apiStatus';
 
-@ApiTags('/msa/users')
-@Controller('/msa')
+@Controller()
 @UseGuards(CheckDatabaseConnectionGuard)
 export class IdentificationTypeController {
   constructor(private identificationTypeService: IdenditicatioService) {}
