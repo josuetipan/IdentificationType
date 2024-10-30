@@ -29,6 +29,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('User Microservicie')
     .setDescription(`Microservicio de usuario para el modo ${appConfig.mode}`)
+    .addServer('http://localhost:3000/v1.0')
     .setVersion('1.0')
     .build();
   app.useGlobalFilters(
