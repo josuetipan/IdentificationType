@@ -45,6 +45,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   //Levantar Microservicio
+  app.setGlobalPrefix('v1.0')
   await app.listen(appConfig.port, '0.0.0.0');
   logger.log(
     `🚀 Microservice started on port ${appConfig.port} in ${appConfig.mode.toUpperCase()} mode`,

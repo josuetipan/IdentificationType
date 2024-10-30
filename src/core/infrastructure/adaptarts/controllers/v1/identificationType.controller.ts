@@ -27,7 +27,7 @@ import { apiStatus } from 'src/utils/api/apiStatus';
     version: 'v1.0'
   }
 )
-@UseGuards(CheckDatabaseConnectionGuard)
+//@UseGuards(CheckDatabaseConnectionGuard)
 export class IdentificationTypeController {
   constructor(private identificationTypeService: IdenditicatioService) {}
 
@@ -42,8 +42,8 @@ export class IdentificationTypeController {
   @ApiResponse(apiStatus.conflict)
   @ApiResponse(apiStatus.notFound)
   
-  @UseGuards(AuthGuard)
-  @Get('/retrieveidentificationtypes/1.0')
+  //@UseGuards(AuthGuard)
+  @Get('/retrieveidentificationtypes')
   async getAllIdentificationType(@Req() req): Promise<IdentificationResponse[]> {
     return this.identificationTypeService.findAll(req.status);
   }
