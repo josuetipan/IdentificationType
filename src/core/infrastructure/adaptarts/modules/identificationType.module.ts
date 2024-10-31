@@ -12,9 +12,9 @@ import { AuthConfig } from 'auth-guard-michimoney/dist/auth-config.dto';
     LoggerModule.register(process.env.USE_KAFKA === 'true'),
     HttpModule,
     AuthGuardModule.register({
-      introspectionUrl: 'http://192.168.68.144:8080/realms/MICHIMONEY/protocol/openid-connect/token/introspect',
-      clientId: 'mi-app',
-      clientSecret: 'cWBFSs49Zp5cSOdvTv25KMLgYIQgXJIF',
+      introspectionUrl: 'http://192.168.100.221:31745/auth/realms/MICHIMONEYWEB_DEV/protocol/openid-connect/token/introspect',
+      clientId: 'michimoney_app',
+      clientSecret: '387f125b-da1d-4c4a-8964-d44ef8debe7c',
     } as AuthConfig), // Proporciona la configuración aquí*/
   ],
   controllers:[IdentificationTypeController],

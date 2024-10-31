@@ -71,7 +71,7 @@ export const messageCustom = (
     channel: 'web',
     consumer: 'self service portal',
     apiName: kafkaConfigFormat.apiName,
-    microserviceName: microserviceName,
+    microserviceName: kafkaConfigFormat.apiName,
     methodName: method || kafkaConfigFormat.method.get,
     layer: 'Exposicion',
     dateTimeTransacctionStart: currentTimestamp,

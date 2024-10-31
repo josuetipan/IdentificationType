@@ -20,7 +20,7 @@ export class IdenditicatioService {
   ) {}
 
 
-  async findAll(method): Promise<IdentificationResponse[]> {
+  async findAll(method: Request): Promise<IdentificationResponse[]> {
     const identification = await this.prisma.identification_types.findMany()
     const formattedIdentifications:IdentificationResponse[] = identification.map(record => {
       return {
@@ -28,7 +28,7 @@ export class IdenditicatioService {
           name: record.name,
       };
   });
-    this.logger.log(JSON.stringify(formattedIdentifications))
+    this.logger.log(JSON.stringify(formattedIdentifications), method.url, apiBaseEntityName)
     return formattedIdentifications;
   }
 }
