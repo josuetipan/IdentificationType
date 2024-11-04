@@ -6,18 +6,16 @@ import { IdenditicatioService } from 'src/core/application/services/identificati
 import { HttpModule } from '@nestjs/axios';
 import { AuthGuardModule } from 'auth-guard-michimoney';
 import { AuthConfig } from 'auth-guard-michimoney/dist/auth-config.dto';
+import { ConfigService } from '@nestjs/config';
+import { LoggerKafkaService } from 'src/core/application/loggger/loggerKafka.service';
 
 @Module({
   imports: [
     LoggerModule.register(process.env.USE_KAFKA === 'true'),
     HttpModule,
-    AuthGuardModule.register({
-      introspectionUrl: 'http://192.168.100.221:31745/auth/realms/MICHIMONEYWEB_DEV/protocol/openid-connect/token/introspect',
-      clientId: 'michimoney_app',
-      clientSecret: '387f125b-da1d-4c4a-8964-d44ef8debe7c',
-    } as AuthConfig), // Proporciona la configuración aquí*/
-  ],
+    AuthGuardModule.registerAsync(), // Proporciona la configuración aquí*/
+    ],
   controllers:[IdentificationTypeController],
-  providers: [IdenditicatioService, PrismaService],
+  providers: [IdenditicatioService, PrismaService,ConfigService],
 })
 export class IdentificationModule {}
